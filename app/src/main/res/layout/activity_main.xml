@@ -15,7 +15,7 @@
         android:layout_marginHorizontal="10sp"
         android:layout_marginTop="15sp"
         android:layout_marginBottom="15sp"
-        android:text="DASHBOARD"
+        android:text="@string/Subtitle_Menu"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="50sp"
@@ -34,6 +34,8 @@
             android:rowCount="2">
 
             <androidx.cardview.widget.CardView
+
+                android:id="@+id/map_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -51,7 +53,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="#202124"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingVertical="10sp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -83,6 +86,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/stats_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -100,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="#202124"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingVertical="10sp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -132,6 +137,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/list_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -149,7 +155,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="#202124"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingVertical="10sp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -181,6 +188,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/add_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -198,7 +206,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="#202124"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingVertical="10sp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -230,6 +239,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/help_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -240,14 +250,16 @@
                 android:background="#202124"
                 android:outlineProvider="paddedBounds"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                android:paddingVertical="10sp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="#202124"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingVertical="10sp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -279,6 +291,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/donate_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -296,7 +309,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="#202124"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingVertical="10sp">
 
                     <ImageView
                         android:layout_width="match_parent"
