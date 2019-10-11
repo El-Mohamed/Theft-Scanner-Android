@@ -73,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
         card6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String DonateURL = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RUT5WG33KK3VN&source=url";
+                Uri WebPage = Uri.parse(DonateURL);
+                Intent intent = new Intent(Intent.ACTION_VIEW, WebPage);
+                startActivity(intent);
             }
         });
 
