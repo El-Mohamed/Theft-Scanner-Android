@@ -14,5 +14,8 @@
     <string name="Subtitle_6">SUPPORT THE PROJECT</string>
     <string name="Subtitle_Menu">WELCOME</string>
     <string name="Actionbar_Title_5">Help</string>
+    <string name="title_activity_map">Map</string>
+    <string name="title_activity_help">Help</string>
+    <string name="title_activity_form">Form</string>
 
 </resources>
