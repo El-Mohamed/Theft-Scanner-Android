@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_1">PERSONAL INFORMATION</string>
+    <string name="title_2">VEHICLE INFORMATION</string>
+    <string name="title_3">LOCATION DETAILS</string>
+    <string name="hint_full_name">FULL NAME</string>
+    <string name="hint_brand">BRAND</string>
+    <string name="hint_model">MODEL</string>
+    <string name="hint_city">CITY</string>
+    <string name="hint_street_number">STREET + (NUMBER)</string>
+    <string name="send_button">SEND</string>
+</resources>
