@@ -39,5 +39,63 @@
         <item name="android:layout_marginRight">30sp</item>
     </style>
 
+    <style name="Card_Menu_Left">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_marginLeft">8sp</item>
+        <item name="android:layout_marginTop">4sp</item>
+        <item name="android:layout_marginRight">4sp</item>
+        <item name="android:layout_marginBottom">4sp</item>
+        <item name="android:background">#202124</item>
+        <item name="android:outlineProvider">paddedBounds</item>
+    </style>
+
+    <style name="Card_Menu_Right">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_marginLeft">4sp</item>
+        <item name="android:layout_marginTop">4sp</item>
+        <item name="android:layout_marginRight">8sp</item>
+        <item name="android:layout_marginBottom">4sp</item>
+        <item name="android:background">#202124</item>
+        <item name="android:outlineProvider">paddedBounds</item>
+    </style>
+
+    <style name="Card_Menu_Image">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="Card_Menu_Title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">8sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Card_Menu_Subtitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginBottom">14sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Card_Menu_LinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+        <item name="android:background">#202124</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingVertical">10sp</item>
+    </style>
+
 
 </resources>

@@ -34,52 +34,24 @@
             android:rowCount="2">
 
             <androidx.cardview.widget.CardView
-
                 android:id="@+id/map_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_marginLeft="8sp"
-                android:layout_marginTop="4sp"
-                android:layout_marginRight="4sp"
-                android:layout_marginBottom="4sp"
-                android:background="#202124"
-                android:outlineProvider="paddedBounds"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                style="@style/Card_Menu_Left">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="#202124"
-                    android:orientation="vertical"
-                    android:paddingVertical="10sp">
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/place" />
+                        android:src="@drawable/place"
+                        style="@style/Card_Menu_Image" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8sp"
                         android:text="@string/Title_1"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        style="@style/Card_Menu_Title" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="14sp"
                         android:text="@string/Subtitle_1"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="12sp" />
+                        style="@style/Card_Menu_Subtitle" />
 
                 </LinearLayout>
 
@@ -87,50 +59,23 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/stats_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_marginLeft="4sp"
-                android:layout_marginTop="4sp"
-                android:layout_marginRight="8sp"
-                android:layout_marginBottom="4sp"
-                android:background="#202124"
-                android:outlineProvider="paddedBounds"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                style="@style/Card_Menu_Right">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="#202124"
-                    android:orientation="vertical"
-                    android:paddingVertical="10sp">
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/show_chart" />
+                        android:src="@drawable/show_chart"
+                        style="@style/Card_Menu_Image" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8sp"
                         android:text="@string/Title_2"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        style="@style/Card_Menu_Title" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="14sp"
                         android:text="@string/Subtitle_2"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="12sp" />
+                        style="@style/Card_Menu_Subtitle" />
 
                 </LinearLayout>
 
@@ -138,50 +83,23 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/list_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_marginLeft="8sp"
-                android:layout_marginTop="4sp"
-                android:layout_marginRight="4sp"
-                android:layout_marginBottom="4sp"
-                android:background="#202124"
-                android:outlineProvider="paddedBounds"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                style="@style/Card_Menu_Left">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="#202124"
-                    android:orientation="vertical"
-                    android:paddingVertical="10sp">
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/motorcycle" />
+                        android:src="@drawable/motorcycle"
+                        style="@style/Card_Menu_Image" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8sp"
                         android:text="@string/Tilte_3"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        style="@style/Card_Menu_Title" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="14sp"
                         android:text="@string/Subtitle_3"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="12sp" />
+                        style="@style/Card_Menu_Subtitle" />
 
                 </LinearLayout>
 
@@ -189,50 +107,23 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/add_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_marginLeft="4sp"
-                android:layout_marginTop="4sp"
-                android:layout_marginRight="8sp"
-                android:layout_marginBottom="4sp"
-                android:background="#202124"
-                android:outlineProvider="paddedBounds"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                style="@style/Card_Menu_Right">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="#202124"
-                    android:orientation="vertical"
-                    android:paddingVertical="10sp">
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/add_circle_outline" />
+                        android:src="@drawable/add_circle_outline"
+                        style="@style/Card_Menu_Image" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8sp"
                         android:text="@string/Title_4"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        style="@style/Card_Menu_Title" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="14sp"
                         android:text="@string/Subtitle_4"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="12sp" />
+                        style="@style/Card_Menu_Subtitle" />
 
                 </LinearLayout>
 
@@ -240,51 +131,23 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/help_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_marginLeft="8sp"
-                android:layout_marginTop="4sp"
-                android:layout_marginRight="4sp"
-                android:layout_marginBottom="4sp"
-                android:background="#202124"
-                android:outlineProvider="paddedBounds"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp"
-                android:paddingVertical="10sp">
+                style="@style/Card_Menu_Left">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="#202124"
-                    android:orientation="vertical"
-                    android:paddingVertical="10sp">
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/help_outline" />
+                        android:src="@drawable/help_outline"
+                        style="@style/Card_Menu_Image" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8sp"
                         android:text="@string/Title_5"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        style="@style/Card_Menu_Title" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="14sp"
                         android:text="@string/Subtitle_5"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="12sp" />
+                        style="@style/Card_Menu_Subtitle" />
 
                 </LinearLayout>
 
@@ -292,50 +155,23 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/donate_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_marginLeft="4sp"
-                android:layout_marginTop="4sp"
-                android:layout_marginRight="8sp"
-                android:layout_marginBottom="4sp"
-                android:background="#202124"
-                android:outlineProvider="paddedBounds"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                style="@style/Card_Menu_Right">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="#202124"
-                    android:orientation="vertical"
-                    android:paddingVertical="10sp">
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/attach_money" />
+                        android:src="@drawable/attach_money"
+                        style="@style/Card_Menu_Image" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8sp"
                         android:text="@string/Title_6"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        style="@style/Card_Menu_Title" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="14sp"
                         android:text="@string/Subtitle_6"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="12sp" />
+                        style="@style/Card_Menu_Subtitle" />
 
                 </LinearLayout>
 
