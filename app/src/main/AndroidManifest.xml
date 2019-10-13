@@ -31,19 +31,19 @@
 
 
         <activity
+            android:name=".Form"
+            android:label="Form"
+            android:parentActivityName=".MainActivity"></activity>
+
+        <activity
             android:name=".Help"
             android:label="@string/Actionbar_Title_5"
-            android:parentActivityName=".MainActivity"
-            >
-        </activity>
-
+            android:parentActivityName=".MainActivity"></activity>
 
 
         <meta-data
             android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts"
-            />
-
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

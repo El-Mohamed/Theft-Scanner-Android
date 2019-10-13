@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, Form.class);
+                startActivity(intent);
             }
         });
 
