@@ -16,7 +16,7 @@
             style="@style/Form_Title"
             android:text="@string/title_1" />
         <EditText
-            android:id="@+id/full_name"
+            android:id="@+id/owner"
             style="@style/Form_EditText"
             android:hint="@string/hint_full_name" />
 
