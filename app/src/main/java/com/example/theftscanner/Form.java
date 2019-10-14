@@ -51,14 +51,19 @@ public class Form extends AppCompatActivity {
                 Street = mStreet.getText().toString();
                 City = mCity.getText().toString();
 
-                ConvertToCoordinates(Street + City);
+                if (Owner.isEmpty() || Brand.isEmpty() ||Model.isEmpty() || Street.isEmpty() || City.isEmpty()) {
+                    Toast.makeText(Form.this, R.string.message_empty_fields, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    ConvertToCoordinates(Street + City);
+                    theft = new Theft(Owner, Brand, Model, Street, City, Latitude, Longitude);
+                    MyReference.push().setValue(theft);
 
-                theft = new Theft(Owner, Brand, Model, Street, City, Latitude, Longitude);
-                MyReference.push().setValue(theft);
+                    Intent intent = new Intent(Form.this, MainActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(Form.this, R.string.message_successfully, Toast.LENGTH_LONG).show();
+                }
 
-                Intent intent = new Intent(Form.this, MainActivity.class);
-                startActivity(intent);
-                Toast.makeText(Form.this, R.string.toast_message, Toast.LENGTH_LONG).show();
             }
         });
 
