@@ -1,6 +1,8 @@
 package com.example.theftscanner;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
+import java.util.List;
+
 
 public class Form extends AppCompatActivity {
 
@@ -20,6 +25,7 @@ public class Form extends AppCompatActivity {
     Button mSendButton;
     EditText mOwner, mBrand, mModel, mStreet, mCity;
     String Owner, Brand, Model, Street, City;
+    double Latitude, Longitude;
     Theft theft;
 
     @Override
@@ -45,7 +51,9 @@ public class Form extends AppCompatActivity {
                 Street = mStreet.getText().toString();
                 City = mCity.getText().toString();
 
-                theft = new Theft(Owner, Brand, Model, Street, City);
+                ConvertToCoordinates(Street + City);
+
+                theft = new Theft(Owner, Brand, Model, Street, City, Latitude, Longitude);
                 MyReference.push().setValue(theft);
 
                 Intent intent = new Intent(Form.this, MainActivity.class);
@@ -53,5 +61,28 @@ public class Form extends AppCompatActivity {
                 Toast.makeText(Form.this, R.string.toast_message, Toast.LENGTH_LONG).show();
             }
         });
+
     }
+
+
+    public void ConvertToCoordinates (String InputStreet) {
+
+        String location = InputStreet;
+        List<Address> addressList = null;
+
+        if (location != null || !location.equals("")) {
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Address address = addressList.get(0);
+            Latitude =   address.getLatitude();
+            Longitude = address.getLongitude();
+        }
+    }
+
+
 }

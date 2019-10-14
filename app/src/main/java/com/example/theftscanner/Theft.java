@@ -8,13 +8,26 @@ public class Theft {
     private String Street;
     private String City;
 
+    private double Latitude;
+    private double Longitude;
 
-    public Theft(String nameOwner, String brand, String model, String street, String city) {
+
+    public Theft(String nameOwner, String brand, String model, String street, String city, double latitude, double longitude) {
         NameOwner = nameOwner;
         Brand = brand;
         Model = model;
         Street = street;
         City = city;
+        Latitude = latitude;
+        Longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
     }
 
     public String getNameOwner() {
