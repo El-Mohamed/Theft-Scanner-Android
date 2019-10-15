@@ -9,10 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +31,7 @@ public class Form extends AppCompatActivity {
     String Owner, Brand, Model, Street, City;
     double Latitude, Longitude;
     Theft theft;
-
+    long NumberOfChilds = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,22 @@ public class Form extends AppCompatActivity {
         mModel = findViewById(R.id.model);
         mStreet = findViewById(R.id.street);
         mCity = findViewById(R.id.city);
+
+        MyReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+        NumberOfChilds = (dataSnapshot.getChildrenCount());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +77,7 @@ public class Form extends AppCompatActivity {
                 else {
                     ConvertToCoordinates(Street + City);
                     theft = new Theft(Owner, Brand, Model, Street, City, Latitude, Longitude);
-                    MyReference.push().setValue(theft);
+                    MyReference.child(String.valueOf(NumberOfChilds+1)).setValue(theft);
 
                     Intent intent = new Intent(Form.this, MainActivity.class);
                     startActivity(intent);
