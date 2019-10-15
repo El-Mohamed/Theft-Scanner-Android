@@ -9,5 +9,6 @@
     <string name="hint_city">CITY</string>
     <string name="hint_street_number">STREET + (NUMBER)</string>
     <string name="send_button">SEND</string>
-    <string name="toast_message">Your request has been sent!</string>
+    <string name="message_successfully">Your request has been sent!</string>
+    <string name="message_empty_fields">Please fill in all fields!</string>
 </resources>
