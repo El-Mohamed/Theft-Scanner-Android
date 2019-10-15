@@ -4,6 +4,7 @@
     <string name="title_2">VEHICLE INFORMATION</string>
     <string name="title_3">LOCATION DETAILS</string>
     <string name="hint_full_name">FULL NAME</string>
+    <string name="hint_type">TYPE (BIKE, SCOOTER...)</string>
     <string name="hint_brand">BRAND</string>
     <string name="hint_model">MODEL</string>
     <string name="hint_city">CITY</string>

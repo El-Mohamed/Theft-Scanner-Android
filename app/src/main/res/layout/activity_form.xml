@@ -24,6 +24,10 @@
             style="@style/Form_Title"
             android:text="@string/title_2" />
         <EditText
+            android:id="@+id/type"
+            style="@style/Form_EditText"
+            android:hint="@string/hint_type" />
+        <EditText
             android:id="@+id/brand"
             style="@style/Form_EditText"
             android:hint="@string/hint_brand" />

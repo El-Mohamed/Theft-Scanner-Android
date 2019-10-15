@@ -27,8 +27,8 @@ public class Form extends AppCompatActivity {
     DatabaseReference MyReference;
 
     Button mSendButton;
-    EditText mOwner, mBrand, mModel, mStreet, mCity;
-    String Owner, Brand, Model, Street, City;
+    EditText mOwner, mType, mBrand, mModel, mStreet, mCity;
+    String Owner, Type, Brand, Model, Street, City;
     double Latitude, Longitude;
     Theft theft;
     long NumberOfChilds = 0;
@@ -41,6 +41,7 @@ public class Form extends AppCompatActivity {
 
         mSendButton = findViewById(R.id.send_button);
         mOwner = findViewById(R.id.owner);
+        mType = findViewById(R.id.type);
         mBrand = findViewById(R.id.brand);
         mModel = findViewById(R.id.model);
         mStreet = findViewById(R.id.street);
@@ -66,17 +67,18 @@ public class Form extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Owner = mOwner.getText().toString();
+                Type = mType.getText().toString();
                 Brand = mBrand.getText().toString();
                 Model = mModel.getText().toString();
                 Street = mStreet.getText().toString();
                 City = mCity.getText().toString();
 
-                if (Owner.isEmpty() || Brand.isEmpty() ||Model.isEmpty() || Street.isEmpty() || City.isEmpty()) {
+                if (Owner.isEmpty() || Type.isEmpty() || Brand.isEmpty() ||Model.isEmpty() || Street.isEmpty() || City.isEmpty()) {
                     Toast.makeText(Form.this, R.string.message_empty_fields, Toast.LENGTH_LONG).show();
                 }
                 else {
                     ConvertToCoordinates(Street + City);
-                    theft = new Theft(Owner, Brand, Model, Street, City, Latitude, Longitude);
+                    theft = new Theft(Owner, Type, Brand, Model, Street, City, Latitude, Longitude);
                     MyReference.child(String.valueOf(NumberOfChilds+1)).setValue(theft);
 
                     Intent intent = new Intent(Form.this, MainActivity.class);
