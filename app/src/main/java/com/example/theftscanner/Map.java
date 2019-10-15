@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +29,8 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     Button mFilterButton;
+    EditText mFilter;
+    String Filter;
     private DatabaseReference Reference;
 
     @Override
@@ -40,30 +43,31 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
         mFilterButton = findViewById(R.id.filter_button);
+        mFilter = findViewById(R.id.preferred_city);
         Reference = FirebaseDatabase.getInstance().getReference().child("Thefts");
 
     }
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady( GoogleMap googleMap) {
         mMap = googleMap;
 
         mFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Filter = mFilter.getText().toString().toLowerCase();
+                mMap.clear();
+
                 Reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                            String details = snapshot.child("brand").getValue().toString();
-                            details += " ";
-                            details += snapshot.child("model").getValue().toString();
-
-                            String city = snapshot.child("city").getValue().toString();
+                            String type = snapshot.child("type").getValue().toString().toUpperCase();
+                            String city = snapshot.child("city").getValue().toString().toLowerCase();
 
                             String strLatitude = snapshot.child("latitude").getValue().toString();
                             String strLongitude = snapshot.child("longitude").getValue().toString();
@@ -71,13 +75,16 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                             double Latitude = Double.parseDouble(strLatitude);
                             double Longitude = Double.parseDouble(strLongitude);
 
-                            LatLng tempLocation = new LatLng(Latitude, Longitude);
-                            mMap.addMarker(new MarkerOptions().position(tempLocation).title(details));
+                            if(city.equals(Filter) ) {
+                                LatLng tempLocation = new LatLng(Latitude, Longitude);
+                                mMap.addMarker(new MarkerOptions().position(tempLocation).title(type));
+                            }
 
-                            Log.d("databasereader", details);
-                            Log.d("databasereader", city);
-                            Log.d("databasereader", strLatitude);
-                            Log.d("databasereader", strLongitude);
+                            Log.d("FirebaseLogger", Filter);
+                            Log.d("FirebaseLogger", type);
+                            Log.d("FirebaseLogger", city);
+                            Log.d("FirebaseLogger", strLatitude);
+                            Log.d("FirebaseLogger", strLongitude);
                         }
 
                     }
@@ -90,11 +97,6 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-
-
-        LatLng MySchool = new LatLng(51.230149, 4.416176);
-        mMap.addMarker(new MarkerOptions().position(MySchool).title("AP Hogeschool"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(MySchool));
-
     }
+
 }

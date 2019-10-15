@@ -3,17 +3,20 @@ package com.example.theftscanner;
 public class Theft {
 
     private String NameOwner;
+    private String Type;
     private String Brand;
     private String Model;
     private String Street;
     private String City;
 
+
     private double Latitude;
     private double Longitude;
 
 
-    public Theft(String nameOwner, String brand, String model, String street, String city, double latitude, double longitude) {
+    public Theft(String nameOwner,String type, String brand, String model, String street, String city, double latitude, double longitude) {
         NameOwner = nameOwner;
+        Type = type;
         Brand = brand;
         Model = model;
         Street = street;
@@ -32,6 +35,10 @@ public class Theft {
 
     public String getNameOwner() {
         return NameOwner;
+    }
+
+    public String getType() {
+        return Type;
     }
 
     public String getBrand() {
