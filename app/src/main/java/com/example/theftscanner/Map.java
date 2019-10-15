@@ -17,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +33,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     EditText mFilter;
     String Filter;
     private DatabaseReference Reference;
+    boolean ToAnimateStart = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,19 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady( GoogleMap googleMap) {
         mMap = googleMap;
 
+        if(ToAnimateStart) {
+            LatLng APHogeschool = new LatLng( 51.230176, 4.415048);
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(APHogeschool)      // Sets the center of the map to Mountain View
+                    .zoom(17)                   // Sets the zoom
+                    .bearing(0)                // Sets the orientation of the camera to east
+                    .tilt(60)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            ToAnimateStart = false;
+        }
+
+
         mFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +78,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                 Reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                        LatLng tempLocation = new LatLng(0,0);
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                             String type = snapshot.child("type").getValue().toString().toUpperCase();
@@ -76,7 +91,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                             double Longitude = Double.parseDouble(strLongitude);
 
                             if(city.equals(Filter) ) {
-                                LatLng tempLocation = new LatLng(Latitude, Longitude);
+                                 tempLocation = new LatLng(Latitude, Longitude);
                                 mMap.addMarker(new MarkerOptions().position(tempLocation).title(type));
                             }
 
@@ -86,6 +101,16 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                             Log.d("FirebaseLogger", strLatitude);
                             Log.d("FirebaseLogger", strLongitude);
                         }
+
+
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(tempLocation)
+                                .zoom(13)
+                                .bearing(0)
+                                .tilt(60)
+                                .build();
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
 
                     }
 
