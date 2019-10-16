@@ -39,29 +39,19 @@
         <item name="android:layout_marginRight">30sp</item>
     </style>
 
-    <style name="Card_Menu_Left">
+    <style name="Card_Menu">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_columnWeight">1</item>
         <item name="android:layout_marginLeft">8sp</item>
-        <item name="android:layout_marginTop">4sp</item>
-        <item name="android:layout_marginRight">4sp</item>
-        <item name="android:layout_marginBottom">4sp</item>
-        <item name="android:background">#202124</item>
-        <item name="android:outlineProvider">paddedBounds</item>
-    </style>
-
-    <style name="Card_Menu_Right">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_columnWeight">1</item>
-        <item name="android:layout_marginLeft">4sp</item>
         <item name="android:layout_marginTop">4sp</item>
         <item name="android:layout_marginRight">8sp</item>
         <item name="android:layout_marginBottom">4sp</item>
         <item name="android:background">#202124</item>
         <item name="android:outlineProvider">paddedBounds</item>
     </style>
+
+
 
     <style name="Card_Menu_Image">
         <item name="android:layout_width">match_parent</item>

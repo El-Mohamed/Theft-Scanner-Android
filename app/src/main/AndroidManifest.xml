@@ -42,10 +42,6 @@
             android:name=".Form"
             android:label="@string/title_activity_form"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".Help"
-            android:label="@string/title_activity_help"
-            android:parentActivityName=".MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

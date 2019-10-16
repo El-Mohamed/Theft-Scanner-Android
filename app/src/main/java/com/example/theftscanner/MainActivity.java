@@ -23,15 +23,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        card1 = findViewById(R.id.map_card);
-        card2 = findViewById(R.id.stats_card);
-        card3 = findViewById(R.id.list_card);
-        card4 = findViewById(R.id.add_card);
-        card5 = findViewById(R.id.help_card);
+        card1 = findViewById(R.id.profile_card);
+        card2 = findViewById(R.id.map_card);
+        card3 = findViewById(R.id.add_card);
+        card4 = findViewById(R.id.list_card);
+        card5 = findViewById(R.id.stats_card);
         card6 = findViewById(R.id.donate_card);
 
 
         card1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        card2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Map.class);
@@ -39,22 +46,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        card2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         card3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-
-        card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Form.class);
@@ -63,11 +55,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        card4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
         card5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Help.class);
-                startActivity(intent);
+
             }
         });
 
