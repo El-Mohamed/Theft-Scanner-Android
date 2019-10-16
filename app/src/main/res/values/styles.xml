@@ -97,5 +97,27 @@
         <item name="android:paddingVertical">10sp</item>
     </style>
 
+    <style name="Auth_Text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:fontFamily">@font/righteous</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Auth_EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">50sp</item>
+        <item name="android:layout_marginBottom">25sp</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="android:fontFamily">@font/righteous</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">@color/Red</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 
 </resources>

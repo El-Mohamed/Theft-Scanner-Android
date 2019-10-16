@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="#202124"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30sp"
+        android:layout_marginBottom="10sp"
+        android:layout_weight="1"
+        android:fontFamily="@font/righteous"
+        android:gravity="center_vertical"
+        android:text="THEFT SCANNER"
+        android:textColor="@android:color/white"
+        android:textSize="35sp"
+        android:textStyle="bold"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingTop="30sp">
+
+        <EditText
+            android:id="@+id/email"
+            style="@style/Auth_EditText"
+            android:hint="E-MAIL"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/password"
+            style="@style/Auth_EditText"
+            android:hint="PASSWORD"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/auth_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20sp"
+            android:background="@drawable/button_layout"
+            android:fontFamily="@font/righteous"
+            android:paddingHorizontal="30sp"
+            android:text="SEND"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text1"
+            style="@style/Auth_Text"
+            android:layout_marginBottom="15sp"
+            android:text="TEXT1"
+            android:clickable="true"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/text2"
+            style="@style/Auth_Text"
+            android:text="TEXT2"
+            android:clickable="true"
+            android:textColor="@color/Red"
+
+            />
+    </LinearLayout>
+
+
+</LinearLayout>
