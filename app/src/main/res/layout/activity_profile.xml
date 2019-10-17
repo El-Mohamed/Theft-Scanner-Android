@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="#202124"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="25sp">
+
+        <TextView
+            android:text="Current account"
+            style="@style/Profile_Text_1" />
+
+        <TextView
+            android:id="@+id/current_mail"
+            android:layout_marginBottom="20sp"
+            android:text="email"
+            style="@style/Profile_Text_2" />
+
+        <TextView
+            android:text="Account ID"
+            style="@style/Profile_Text_1" />
+
+        <TextView
+            android:id="@+id/email_id"
+            android:text="ID"
+            style="@style/Profile_Text_2" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/logout_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40sp"
+        android:layout_marginVertical="20sp"
+        android:background="@drawable/button_layout"
+        android:fontFamily="@font/righteous"
+        android:paddingVertical="3sp"
+        android:text="BUTTON"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        />
+
+</LinearLayout>
+
+
+
