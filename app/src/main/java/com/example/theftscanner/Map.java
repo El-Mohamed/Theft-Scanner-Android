@@ -2,11 +2,13 @@ package com.example.theftscanner;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +20,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -79,9 +83,11 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         LatLng tempLocation = new LatLng(0,0);
+                        Circle tempCircle;
+
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                            String type = snapshot.child("type").getValue().toString().toUpperCase();
+                            String type = snapshot.child("type").getValue().toString().toLowerCase();
                             String city = snapshot.child("city").getValue().toString().toLowerCase();
 
                             String strLatitude = snapshot.child("latitude").getValue().toString();
@@ -90,8 +96,43 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                             double Latitude = Double.parseDouble(strLatitude);
                             double Longitude = Double.parseDouble(strLongitude);
 
+
                             if(city.equals(Filter) ) {
+
                                  tempLocation = new LatLng(Latitude, Longitude);
+
+                                 if(type.equals("bike")){
+                                     tempCircle = mMap.addCircle(new CircleOptions()
+                                             .center(tempLocation)
+                                             .radius(10)
+                                             .strokeColor(Color.YELLOW)
+                                             .fillColor(Color.TRANSPARENT));
+                                }
+                                 else if (type.equals("scooter")) {
+
+                                     tempCircle = mMap.addCircle(new CircleOptions()
+                                             .center(tempLocation)
+                                             .radius(20)
+                                             .strokeColor(Color.rgb(255,165,0) )
+                                             .fillColor(Color.TRANSPARENT));
+                                 }
+                                 else if (type.equals("motorcycle")){
+
+                                     tempCircle = mMap.addCircle(new CircleOptions()
+                                             .center(tempLocation)
+                                             .radius(30)
+                                             .strokeColor(Color.RED)
+                                             .fillColor(Color.TRANSPARENT));
+                                 }
+                                 else
+                                 {
+                                     tempCircle = mMap.addCircle(new CircleOptions()
+                                             .center(tempLocation)
+                                             .radius(15)
+                                             .strokeColor(Color.GRAY)
+                                             .fillColor(Color.TRANSPARENT));
+                                 }
+                                 
                                 mMap.addMarker(new MarkerOptions().position(tempLocation).title(type));
                             }
 
