@@ -11,11 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".Profile"
+        <activity android:name=".Statistics"></activity>
+        <activity
+            android:name=".Profile"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".MainActivity"/>
-
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".Authentication" />
 
         <meta-data
@@ -30,7 +30,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.theftscanner.MainActivity" />
         </activity>
-
         <activity
             android:name=".SplashScreen"
             android:theme="@style/SplashScreenTheme">
@@ -40,10 +39,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".Form"
             android:label="@string/title_activity_form"
