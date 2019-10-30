@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -62,11 +63,11 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         if(ToAnimateStart) {
             LatLng APHogeschool = new LatLng( 51.230176, 4.415048);
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(APHogeschool)      // Sets the center of the map to Mountain View
-                    .zoom(17)                   // Sets the zoom
-                    .bearing(0)                // Sets the orientation of the camera to east
-                    .tilt(60)                   // Sets the tilt of the camera to 30 degrees
-                    .build();                   // Creates a CameraPosition from the builder
+                    .target(APHogeschool)
+                    .zoom(13)
+                    .bearing(0)                
+                    .tilt(60)
+                    .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             ToAnimateStart = false;
         }
@@ -75,14 +76,14 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         mFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mFilter.onEditorAction(EditorInfo.IME_ACTION_DONE);
                 Filter = mFilter.getText().toString().toLowerCase();
                 mMap.clear();
 
                 Reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        LatLng tempLocation = new LatLng(0,0);
+                        LatLng tempLocation = new LatLng(51.230176,4.415048);
                         Circle tempCircle;
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -97,7 +98,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                             double Longitude = Double.parseDouble(strLongitude);
 
 
-                            if(city.equals(Filter) ) {
+                            if(city.equals(Filter) && !Filter.isEmpty()) {
 
                                  tempLocation = new LatLng(Latitude, Longitude);
 
