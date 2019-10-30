@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,16 +29,18 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class Form extends AppCompatActivity {
+public class Form extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     DatabaseReference MyReference;
 
+    Spinner mSpinner;
     Button mSendButton;
-    EditText mOwner, mType, mBrand, mModel, mStreet, mCity;
+    EditText mOwner, mBrand, mModel, mStreet, mCity;
     String Owner, Type, Brand, Model, Street, City;
     double Latitude, Longitude;
     Theft theft;
     long NumberOfChilds = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +49,25 @@ public class Form extends AppCompatActivity {
 
         MyReference = FirebaseDatabase.getInstance().getReference().child("Thefts");
 
+        mSpinner = findViewById(R.id.spinner_types);
         mSendButton = findViewById(R.id.send_button);
         mOwner = findViewById(R.id.owner);
-        mType = findViewById(R.id.type);
         mBrand = findViewById(R.id.brand);
         mModel = findViewById(R.id.model);
         mStreet = findViewById(R.id.street);
         mCity = findViewById(R.id.city);
+
+        if (mSpinner != null) {
+            mSpinner.setOnItemSelectedListener(this);
+        }
+
+        ArrayAdapter<CharSequence> myAdapter = ArrayAdapter.createFromResource(this, R.array.vehicle_array, R.layout.spinner_layout);
+        myAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+
+        if (mSpinner != null) {
+            mSpinner.setAdapter(myAdapter);
+        }
+
 
         MyReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -68,6 +86,15 @@ public class Form extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Type = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 
     public void ConvertToCoordinates(String InputStreet) {
 
@@ -91,7 +118,6 @@ public class Form extends AppCompatActivity {
     public void SendToDatabase(View view) {
         mCity.onEditorAction(EditorInfo.IME_ACTION_DONE);
         Owner = mOwner.getText().toString();
-        Type = mType.getText().toString();
         Brand = mBrand.getText().toString();
         Model = mModel.getText().toString();
         Street = mStreet.getText().toString();
@@ -121,7 +147,6 @@ public class Form extends AppCompatActivity {
 
             myAlertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    // User cancelled the dialog.
 
                 }
             });

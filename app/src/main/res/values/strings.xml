@@ -19,4 +19,14 @@
     <string name="title_activity_form">Form</string>
     <string name="title_activity_profile">Profile</string>
 
+    <string-array name="vehicle_array">
+        <item>SCOOTER</item>
+        <item>CRUISER</item>
+        <item>OFF-ROAD</item>
+        <item>TOURING</item>
+        <item>SPORTS BIKE</item>
+        <item>OTHER</item>
+    </string-array>
+
+
 </resources>

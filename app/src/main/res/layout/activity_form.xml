@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:background="@color/BackgroundColorDark"
-    >
+    android:orientation="vertical">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -14,13 +13,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="15sp"
-            >
+            android:orientation="vertical">
 
             <TextView
                 style="@style/Form_Title"
                 android:text="@string/title_1" />
+
             <EditText
                 android:id="@+id/owner"
                 style="@style/Form_EditText"
@@ -29,14 +28,29 @@
             <TextView
                 style="@style/Form_Title"
                 android:text="@string/title_2" />
-            <EditText
-                android:id="@+id/type"
-                style="@style/Form_EditText"
-                android:hint="@string/hint_type" />
+
+            <Spinner
+                android:id="@+id/spinner_types"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32sp"
+                android:layout_marginTop="17sp"
+                android:layout_marginBottom="10sp"
+                android:backgroundTint="@color/Red" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="34sp"
+                android:layout_marginBottom="10sp"
+                android:background="@color/Red" />
+
+
             <EditText
                 android:id="@+id/brand"
                 style="@style/Form_EditText"
                 android:hint="@string/hint_brand" />
+
             <EditText
                 android:id="@+id/model"
                 style="@style/Form_EditText"
@@ -45,10 +59,12 @@
             <TextView
                 style="@style/Form_Title"
                 android:text="@string/title_3" />
+
             <EditText
                 android:id="@+id/street"
                 style="@style/Form_EditText"
                 android:hint="@string/hint_street_number" />
+
             <EditText
                 android:id="@+id/city"
                 style="@style/Form_EditText"
@@ -68,10 +84,10 @@
         android:background="@drawable/button_layout"
         android:fontFamily="@font/righteous"
         android:onClick="SendToDatabase"
-        android:padding="10sp"
+        android:paddingVertical="3sp"
         android:text="@string/send_button"
         android:textColor="@android:color/white"
-        android:textSize="40sp" />
+        android:textSize="25sp" />
 
 </LinearLayout>
 
