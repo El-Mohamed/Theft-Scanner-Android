@@ -1,15 +1,18 @@
 package com.example.theftscanner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +35,7 @@ public class Form extends AppCompatActivity {
     double Latitude, Longitude;
     Theft theft;
     long NumberOfChilds = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,7 @@ public class Form extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-        NumberOfChilds = (dataSnapshot.getChildrenCount());
+                    NumberOfChilds = (dataSnapshot.getChildrenCount());
                 }
             }
 
@@ -62,37 +66,10 @@ public class Form extends AppCompatActivity {
         });
 
 
-
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Owner = mOwner.getText().toString();
-                Type = mType.getText().toString();
-                Brand = mBrand.getText().toString();
-                Model = mModel.getText().toString();
-                Street = mStreet.getText().toString();
-                City = mCity.getText().toString();
-
-                if (Owner.isEmpty() || Type.isEmpty() || Brand.isEmpty() ||Model.isEmpty() || Street.isEmpty() || City.isEmpty()) {
-                    Toast.makeText(Form.this, R.string.message_empty_fields, Toast.LENGTH_LONG).show();
-                }
-                else {
-                    ConvertToCoordinates(Street + City);
-                    theft = new Theft(Owner, Type, Brand, Model, Street, City, Latitude, Longitude);
-                    MyReference.child(String.valueOf(NumberOfChilds+1)).setValue(theft);
-
-                    Intent intent = new Intent(Form.this, MainActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(Form.this, R.string.message_successfully, Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
-
     }
 
 
-    public void ConvertToCoordinates (String InputStreet) {
+    public void ConvertToCoordinates(String InputStreet) {
 
         String location = InputStreet;
         List<Address> addressList = null;
@@ -106,10 +83,53 @@ public class Form extends AppCompatActivity {
                 e.printStackTrace();
             }
             Address address = addressList.get(0);
-            Latitude =   address.getLatitude();
+            Latitude = address.getLatitude();
             Longitude = address.getLongitude();
         }
     }
 
+    public void SendToDatabase(View view) {
+        mCity.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        Owner = mOwner.getText().toString();
+        Type = mType.getText().toString();
+        Brand = mBrand.getText().toString();
+        Model = mModel.getText().toString();
+        Street = mStreet.getText().toString();
+        City = mCity.getText().toString();
+
+
+        if (Owner.isEmpty() || Type.isEmpty() || Brand.isEmpty() || Model.isEmpty() || Street.isEmpty() || City.isEmpty()) {
+            Toast.makeText(Form.this, R.string.message_empty_fields, Toast.LENGTH_LONG).show();
+        } else {
+
+            AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(Form.this);
+            myAlertBuilder.setTitle("Confirm");
+            myAlertBuilder.setMessage("Are u sure you want to send?");
+
+            myAlertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                    ConvertToCoordinates(Street + City);
+                    theft = new Theft(Owner, Type, Brand, Model, Street, City, Latitude, Longitude);
+                    MyReference.child(String.valueOf(NumberOfChilds + 1)).setValue(theft);
+
+                    Intent intent = new Intent(Form.this, MainActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(Form.this, R.string.message_successfully, Toast.LENGTH_LONG).show();
+                }
+            });
+
+            myAlertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // User cancelled the dialog.
+
+                }
+            });
+
+            myAlertBuilder.show();
+
+        }
+
+    }
 
 }
