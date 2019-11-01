@@ -14,10 +14,10 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private List<String> allTypes;
+    private String[] allTypes;
     private List<String> allNumbers;
 
-    Adapter(Context context, List<String> AllTypes, List<String> AllNumbers) {
+    Adapter(Context context,String[] AllTypes, List<String> AllNumbers) {
 
         this.layoutInflater = LayoutInflater.from(context);
         this.allTypes = AllTypes;
@@ -35,7 +35,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String tempType = allTypes.get(position);
+        String tempType = allTypes[position];
         String tempNumber = allNumbers.get(position);
         holder.mType.setText(tempType);
         holder.mNumber.setText(tempNumber);
@@ -44,7 +44,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return allTypes.size();
+        return allTypes.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
