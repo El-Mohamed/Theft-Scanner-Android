@@ -54,7 +54,8 @@ public class Dashboard extends AppCompatActivity {
         card4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(Dashboard.this, TheftDetails.class);
+                startActivity(intent);
             }
         });
 
