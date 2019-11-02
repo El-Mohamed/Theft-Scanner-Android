@@ -15,11 +15,12 @@
 
 
     <string-array name="vehicle_array">
+        <item>BIKE</item>
         <item>SCOOTER</item>
         <item>CRUISER</item>
         <item>OFF-ROAD</item>
         <item>TOURING</item>
-        <item>SPORTS BIKE</item>
+        <item>SPORTS-BIKE</item>
         <item>OTHER</item>
     </string-array>
 

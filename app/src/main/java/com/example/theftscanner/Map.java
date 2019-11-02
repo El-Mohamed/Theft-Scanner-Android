@@ -2,7 +2,6 @@ package com.example.theftscanner;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -32,35 +31,50 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     Button mFilterButton;
     EditText mFilter;
     String Filter;
+
     private DatabaseReference Reference;
+
     boolean ToAnimateStart = true;
+
+    int[] ColorLabels = {Color.rgb(229, 38, 30),
+            Color.rgb(235, 117, 50),
+            Color.rgb(163, 224, 71),
+            Color.rgb(209, 58, 231),
+            Color.rgb(67, 85, 219),
+            Color.rgb(52, 187, 230),
+            Color.rgb(73, 218, 154),
+    };
+
+
+    String[] VehicleTypes;
+    Circle tempCircle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         mFilterButton = findViewById(R.id.filter_button);
         mFilter = findViewById(R.id.preferred_city);
         Reference = FirebaseDatabase.getInstance().getReference().child("Thefts");
-
+        VehicleTypes = getResources().getStringArray(R.array.vehicle_array);
     }
 
 
     @Override
-    public void onMapReady( GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if(ToAnimateStart) {
-            LatLng APHogeschool = new LatLng( 51.230176, 4.415048);
+        if (ToAnimateStart) {
+            LatLng APHogeschool = new LatLng(51.230176, 4.415048);
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(APHogeschool)
                     .zoom(13)
-                    .bearing(0)                
+                    .bearing(0)
                     .tilt(60)
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -78,12 +92,11 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                 Reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        LatLng tempLocation = new LatLng(51.230176,4.415048);
-                        Circle tempCircle;
+                        LatLng tempLocation = new LatLng(51.230176, 4.415048);
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                            String type = snapshot.child("type").getValue().toString().toLowerCase();
+                            String type = snapshot.child("type").getValue().toString();
                             String city = snapshot.child("city").getValue().toString().toLowerCase();
 
                             String strLatitude = snapshot.child("latitude").getValue().toString();
@@ -93,50 +106,26 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
                             double Longitude = Double.parseDouble(strLongitude);
 
 
-                            if(city.equals(Filter) && !Filter.isEmpty()) {
+                            if (city.equals(Filter) && !Filter.isEmpty()) {
 
-                                 tempLocation = new LatLng(Latitude, Longitude);
 
-                                 if(type.equals("bike")){
-                                     tempCircle = mMap.addCircle(new CircleOptions()
-                                             .center(tempLocation)
-                                             .radius(10)
-                                             .strokeColor(Color.YELLOW)
-                                             .fillColor(Color.TRANSPARENT));
+                                tempLocation = new LatLng(Latitude, Longitude);
+
+                                for (int i = 0; i < VehicleTypes.length; i++) {
+
+                                    if (type.equals(VehicleTypes[i])) {
+                                        tempCircle = mMap.addCircle(new CircleOptions()
+                                                .center(tempLocation)
+                                                .radius(10)
+                                                .strokeColor(ColorLabels[i])
+                                                .fillColor(Color.TRANSPARENT));
+                                    }
+
                                 }
-                                 else if (type.equals("scooter")) {
 
-                                     tempCircle = mMap.addCircle(new CircleOptions()
-                                             .center(tempLocation)
-                                             .radius(20)
-                                             .strokeColor(Color.rgb(255,165,0) )
-                                             .fillColor(Color.TRANSPARENT));
-                                 }
-                                 else if (type.equals("motorcycle")){
-
-                                     tempCircle = mMap.addCircle(new CircleOptions()
-                                             .center(tempLocation)
-                                             .radius(30)
-                                             .strokeColor(Color.RED)
-                                             .fillColor(Color.TRANSPARENT));
-                                 }
-                                 else
-                                 {
-                                     tempCircle = mMap.addCircle(new CircleOptions()
-                                             .center(tempLocation)
-                                             .radius(15)
-                                             .strokeColor(Color.GRAY)
-                                             .fillColor(Color.TRANSPARENT));
-                                 }
-                                 
                                 mMap.addMarker(new MarkerOptions().position(tempLocation).title(type));
                             }
 
-                            Log.d("FirebaseLogger", Filter);
-                            Log.d("FirebaseLogger", type);
-                            Log.d("FirebaseLogger", city);
-                            Log.d("FirebaseLogger", strLatitude);
-                            Log.d("FirebaseLogger", strLongitude);
                         }
 
 

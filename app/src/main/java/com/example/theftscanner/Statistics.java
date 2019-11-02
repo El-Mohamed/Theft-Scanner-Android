@@ -29,13 +29,22 @@ public class Statistics extends AppCompatActivity {
 
     EditText mFilter;
 
-    String[] Types;
+    String[] VehicleTypes;
     int[] Counts;
     String Filter;
 
     PieChart pieChart;
     PieDataSet dataSet;
     ArrayList<PieEntry> dataValues;
+
+    int[] ColorLabels = {Color.rgb(229, 38, 30),
+            Color.rgb(235, 117, 50),
+            Color.rgb(163, 224, 71),
+            Color.rgb(209, 58, 231),
+            Color.rgb(67, 85, 219),
+            Color.rgb(52, 187, 230),
+            Color.rgb(73, 218, 154),
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +55,21 @@ public class Statistics extends AppCompatActivity {
         pieChart = findViewById(R.id.pieChart);
         mFilter = findViewById(R.id.preferred_city_stats);
 
-        Types = getResources().getStringArray(R.array.vehicle_array);
-        Counts = new int[6];
+        VehicleTypes = getResources().getStringArray(R.array.vehicle_array);
+        Counts = new int[7];
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < VehicleTypes.length; i++) {
             Counts[i] = 0;
         }
 
+        pieChart.setNoDataText("Enter a city in the search bar.");
+
     }
 
-    
+
     public void SetChart(View view) {
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < VehicleTypes.length; i++) {
             Counts[i] = 0;
         }
         mFilter.onEditorAction(EditorInfo.IME_ACTION_DONE);
@@ -76,49 +87,39 @@ public class Statistics extends AppCompatActivity {
 
                         if (Filter.equals(city)) {
 
-                            if (type.equals(Types[0])) {
-                                int oldValue = Counts[0];
-                                int newValue = oldValue + 1;
-                                Counts[0] = newValue;
-                            } else if (type.equals(Types[1])) {
-                                int oldValue = Counts[1];
-                                int newValue = oldValue + 1;
-                                Counts[1] = newValue;
-                            } else if (type.equals(Types[2])) {
-                                int oldValue = Counts[2];
-                                int newValue = oldValue + 1;
-                                Counts[2] = newValue;
-                            } else if (type.equals(Types[3])) {
-                                int oldValue = Counts[3];
-                                int newValue = oldValue + 1;
-                                Counts[3] = newValue;
-                            } else if (type.equals(Types[4])) {
-                                int oldValue = Counts[4];
-                                int newValue = oldValue + 1;
-                                Counts[4] = newValue;
-                            } else if (type.equals(Types[5])) {
-                                int oldValue = Counts[5];
-                                int newValue = oldValue + 1;
-                                Counts[5] = newValue;
+                            for (int i = 0; i < 7; i++) {
+
+                                if (type.equals(VehicleTypes[i])) {
+                                    int oldValue = Counts[i];
+                                    int newValue = oldValue + 1;
+                                    Counts[i] = newValue;
+                                }
+
                             }
 
                         }
                     }
 
                     dataValues = new ArrayList<>();
+                    int[] EndColors = ColorLabels;
+                    int ColorCounter = 0;
 
-                    for (int index = 0; index < 6; index++) {
+                    for (int index = 0; index < VehicleTypes.length; index++) {
 
                         int val = Counts[index];
 
                         if (val != 0) {
-                            dataValues.add(new PieEntry(val, Types[index]));
+
+                            EndColors[ColorCounter] = ColorLabels[index];
+                            ColorCounter++;
+                            dataValues.add(new PieEntry(val, VehicleTypes[index]));
                         }
                     }
 
                     dataSet = new PieDataSet(dataValues, "");
                     dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
                     dataSet.setValueTextSize(15);
+                    dataSet.setColors(ColorLabels);
 
 
                     PieData pieData = new PieData(dataSet);
