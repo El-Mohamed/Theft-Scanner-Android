@@ -1,15 +1,19 @@
 package com.example.theftscanner;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,17 +25,16 @@ import java.util.ArrayList;
 public class Statistics extends AppCompatActivity {
 
     private DatabaseReference Reference;
-    Adapter adapter;
 
-    RecyclerView recyclerView;
-    Button mButton;
     EditText mFilter;
 
     String[] Types;
-    ArrayList<String> Results;
     int[] Counts;
     String Filter;
-    
+
+    PieChart pieChart;
+    PieDataSet dataSet;
+    ArrayList<PieEntry> dataValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,102 +42,113 @@ public class Statistics extends AppCompatActivity {
         setContentView(R.layout.activity_statistics);
 
         Reference = FirebaseDatabase.getInstance().getReference().child("Thefts");
+        pieChart = findViewById(R.id.pieChart);
+        mFilter = findViewById(R.id.preferred_city_stats);
+
         Types = getResources().getStringArray(R.array.vehicle_array);
-        Results = new ArrayList<>();
-Counts = new int[6];
+        Counts = new int[6];
+
         for (int i = 0; i < 6; i++) {
-            Results.add("");
             Counts[i] = 0;
         }
 
+    }
 
-        mFilter = findViewById(R.id.preferred_city_stats);
-        mButton = findViewById(R.id.filter_button_stats);
-        recyclerView = findViewById(R.id.recyclerview_stats);
+    
+    public void SetChart(View view) {
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(this, Types, Results);
-        recyclerView.setAdapter(adapter);
+        for (int i = 0; i < 6; i++) {
+            Counts[i] = 0;
+        }
 
+        Filter = mFilter.getText().toString();
 
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (!Filter.isEmpty()) {
 
-                Filter = mFilter.getText().toString();
+            Reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                if (Filter.isEmpty()) {
+                        String type = snapshot.child("type").getValue().toString();
+                        String city = snapshot.child("city").getValue().toString();
 
-                    Results.clear();
-                 
-                    for (int i = 0; i < 6; i++) {
-                        Results.add("");
-                        Counts[i] = 0;
+                        if (Filter.equals(city)) {
+
+                            if (type.equals(Types[0])) {
+                                int oldValue = Counts[0];
+                                int newValue = oldValue + 1;
+                                Counts[0] = newValue;
+                            } else if (type.equals(Types[1])) {
+                                int oldValue = Counts[1];
+                                int newValue = oldValue + 1;
+                                Counts[1] = newValue;
+                            } else if (type.equals(Types[2])) {
+                                int oldValue = Counts[2];
+                                int newValue = oldValue + 1;
+                                Counts[2] = newValue;
+                            } else if (type.equals(Types[3])) {
+                                int oldValue = Counts[3];
+                                int newValue = oldValue + 1;
+                                Counts[3] = newValue;
+                            } else if (type.equals(Types[4])) {
+                                int oldValue = Counts[4];
+                                int newValue = oldValue + 1;
+                                Counts[4] = newValue;
+                            } else if (type.equals(Types[5])) {
+                                int oldValue = Counts[5];
+                                int newValue = oldValue + 1;
+                                Counts[5] = newValue;
+                            }
+
+                        }
                     }
-                    recyclerView.setAdapter(adapter);
 
-                } else {
+                    dataValues = new ArrayList<>();
 
-                    Reference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (int index = 0; index < 6; index++) {
 
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        int val = Counts[index];
 
-                                String type = snapshot.child("type").getValue().toString();
-                                String city = snapshot.child("city").getValue().toString();
-
-                                if (Filter.equals(city)) {
-
-                                    if (type.equals(Types[0])) {
-                                        int oldValue = Counts[0];
-                                        int newValue = oldValue + 1;
-                                        Counts[0] = newValue;
-                                    } else if (type.equals(Types[1])) {
-                                        int oldValue = Counts[1];
-                                        int newValue = oldValue + 1;
-                                        Counts[1] = newValue;
-                                    } else if (type.equals(Types[2])) {
-                                        int oldValue = Counts[2];
-                                        int newValue = oldValue + 1;
-                                        Counts[2] = newValue;
-                                    } else if (type.equals(Types[3])) {
-                                        int oldValue = Counts[3];
-                                        int newValue = oldValue + 1;
-                                     Counts[3] = newValue;
-                                    } else if (type.equals(Types[4])) {
-                                        int oldValue = Counts[4];
-                                        int newValue = oldValue + 1;
-                                        Counts[4] = newValue;
-                                    } else if (type.equals(Types[5])) {
-                                        int oldValue = Counts[5];
-                                        int newValue = oldValue + 1;
-                                        Counts[5] = newValue;
-                                    }
-
-                                }
-                            }
-
-                            for (int i = 0; i < 6; i++) {
-                                Results.set(i, Integer.toString(Counts[i]));
-                            }
-
-
-                            recyclerView.setAdapter(adapter);
-
+                        if (val != 0) {
+                            dataValues.add(new PieEntry(val, Types[index]));
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                    dataSet = new PieDataSet(dataValues, "");
+                    dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                    dataSet.setValueTextSize(15);
 
-                        }
-                    });
+
+                    PieData pieData = new PieData(dataSet);
+                    pieChart.getDescription().setText("");
+                    pieChart.setEntryLabelTextSize(15);
+                    pieChart.setHoleRadius(50);
+                    pieChart.setTransparentCircleRadius(55);
+                    pieChart.setHoleColor(Color.TRANSPARENT);
+                    Legend legend = pieChart.getLegend();
+                    legend.setTextColor(Color.WHITE);
+                    legend.setTextSize(15);
+                    legend.setWordWrapEnabled(true);
+                    legend.setXEntrySpace(14);
+                    legend.setForm(Legend.LegendForm.CIRCLE);
+
+                    pieChart.setData(pieData);
+                    pieChart.invalidate();
+                    pieChart.animateXY(1500, 1500);
 
                 }
 
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                }
+            });
+
+        }
 
     }
 }
+
+
+
