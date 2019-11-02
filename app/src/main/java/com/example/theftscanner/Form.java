@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,13 +36,15 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
     DatabaseReference MyReference;
 
     Spinner mSpinner;
-    Button mSendButton;
+    Button mSendButton, mImageButton;
     EditText mOwner, mBrand, mModel, mStreet, mCity;
     String Owner, Type, Brand, Model, Street, City;
     double Latitude, Longitude;
     Theft theft;
     long NumberOfChilds = 0;
 
+    private Uri mImageUri;
+    private static final int PICK_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,7 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
         mSpinner = findViewById(R.id.spinner_types);
         mSendButton = findViewById(R.id.send_button);
+        mImageButton = findViewById(R.id.button_choose_image);
         mOwner = findViewById(R.id.owner);
         mBrand = findViewById(R.id.brand);
         mModel = findViewById(R.id.model);
@@ -80,6 +85,14 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+
+        mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenFileChooser();
             }
         });
 
@@ -114,6 +127,25 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
             Longitude = address.getLongitude();
         }
     }
+
+    public void OpenFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+            mImageButton.setText("IMAGE PICKED");
+
+        }
+    }
+
 
     public void SendToDatabase(View view) {
         mCity.onEditorAction(EditorInfo.IME_ACTION_DONE);

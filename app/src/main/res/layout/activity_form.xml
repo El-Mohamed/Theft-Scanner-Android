@@ -70,6 +70,20 @@
                 style="@style/Form_EditText"
                 android:hint="@string/hint_city" />
 
+
+            <Button
+                android:layout_marginLeft="30sp"
+                android:id="@+id/button_choose_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_layout"
+                android:fontFamily="@font/righteous"
+                android:text="NO IMAGE SELECTED"
+                android:textColor="@android:color/white"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="10sp"/>
+
         </LinearLayout>
 
     </ScrollView>
