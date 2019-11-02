@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/BackgroundColorDark"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Dashboard"
+    tools:showIn="@layout/activity_dashboard">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10sp"
+        android:layout_marginTop="15sp"
+        android:layout_marginBottom="15sp"
+        android:text="@string/Subtitle_Menu"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/righteous" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10sp">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="1"
+            android:rowCount="6">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/map_card"
+                style="@style/Card_Menu"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
+
+                    <ImageView
+                        style="@style/Card_Menu_Image"
+                        android:src="@drawable/place" />
+
+                    <TextView
+                        style="@style/Card_Menu_Title"
+                        android:text="@string/Title_1" />
+
+                    <TextView
+                        style="@style/Card_Menu_Subtitle"
+                        android:text="@string/Subtitle_1" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/add_card"
+                style="@style/Card_Menu"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
+
+                    <ImageView
+                        style="@style/Card_Menu_Image"
+                        android:src="@drawable/add_circle_outline" />
+
+                    <TextView
+                        style="@style/Card_Menu_Title"
+                        android:text="@string/Title_4" />
+
+                    <TextView
+                        style="@style/Card_Menu_Subtitle"
+                        android:text="@string/Subtitle_4" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/list_card"
+                style="@style/Card_Menu"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
+
+                    <ImageView
+                        style="@style/Card_Menu_Image"
+                        android:src="@drawable/motorcycle" />
+
+                    <TextView
+                        style="@style/Card_Menu_Title"
+                        android:text="@string/Title_3" />
+
+                    <TextView
+                        style="@style/Card_Menu_Subtitle"
+                        android:text="@string/Subtitle_3" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/stats_card"
+                style="@style/Card_Menu"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout style="@style/Card_Menu_LinearLayout">
+
+                    <ImageView
+                        style="@style/Card_Menu_Image"
+                        android:src="@drawable/show_chart" />
+
+                    <TextView
+                        style="@style/Card_Menu_Title"
+                        android:text="@string/Title_2" />
+
+                    <TextView
+                        style="@style/Card_Menu_Subtitle"
+                        android:text="@string/Subtitle_2" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </GridLayout>
+
+    </ScrollView>
+
+</LinearLayout>

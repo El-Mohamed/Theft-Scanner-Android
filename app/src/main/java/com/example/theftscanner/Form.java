@@ -139,7 +139,7 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
                     theft = new Theft(Owner, Type, Brand, Model, Street, City, Latitude, Longitude);
                     MyReference.child(String.valueOf(NumberOfChilds + 1)).setValue(theft);
 
-                    Intent intent = new Intent(Form.this, MainActivity.class);
+                    Intent intent = new Intent(Form.this, Dashboard.class);
                     startActivity(intent);
                     Toast.makeText(Form.this, R.string.message_successfully, Toast.LENGTH_LONG).show();
                 }

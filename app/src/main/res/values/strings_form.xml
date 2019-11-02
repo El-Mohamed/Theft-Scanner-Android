@@ -12,4 +12,16 @@
     <string name="send_button">SEND</string>
     <string name="message_successfully">Your request has been sent!</string>
     <string name="message_empty_fields">Please fill in all fields!</string>
+
+
+    <string-array name="vehicle_array">
+        <item>SCOOTER</item>
+        <item>CRUISER</item>
+        <item>OFF-ROAD</item>
+        <item>TOURING</item>
+        <item>SPORTS BIKE</item>
+        <item>OTHER</item>
+    </string-array>
+
+
 </resources>

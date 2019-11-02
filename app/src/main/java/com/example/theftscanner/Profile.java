@@ -1,18 +1,15 @@
 package com.example.theftscanner;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
 
 public class Profile extends AppCompatActivity {
 
@@ -55,7 +52,7 @@ public class Profile extends AppCompatActivity {
 
                 if (mAuth.getCurrentUser() != null) {
                     FirebaseAuth.getInstance().signOut();
-                    Intent intent = new Intent(Profile.this, MainActivity.class);
+                    Intent intent = new Intent(Profile.this, Dashboard.class);
                     startActivity(intent);
                     finish();
                 } else {
