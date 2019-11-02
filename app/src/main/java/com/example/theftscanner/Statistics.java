@@ -3,6 +3,7 @@ package com.example.theftscanner;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -60,7 +61,7 @@ public class Statistics extends AppCompatActivity {
         for (int i = 0; i < 6; i++) {
             Counts[i] = 0;
         }
-
+        mFilter.onEditorAction(EditorInfo.IME_ACTION_DONE);
         Filter = mFilter.getText().toString();
 
         if (!Filter.isEmpty()) {
