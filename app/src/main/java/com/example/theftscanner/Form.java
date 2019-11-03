@@ -1,19 +1,23 @@
 package com.example.theftscanner;
 
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,11 +25,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,9 +44,13 @@ import java.util.List;
 public class Form extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     DatabaseReference MyReference;
+    DatabaseReference mDatabaseRef;
+    private StorageReference mStorageReference;
 
     Spinner mSpinner;
-    Button mSendButton, mImageButton;
+    ImageView mPreviewImage;
+    Button mSendButton;
+    TextView mChooseImage;
     EditText mOwner, mBrand, mModel, mStreet, mCity;
     String Owner, Type, Brand, Model, Street, City;
     double Latitude, Longitude;
@@ -52,10 +66,13 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
         setContentView(R.layout.activity_form);
 
         MyReference = FirebaseDatabase.getInstance().getReference().child("Thefts");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("uploads");
+        mStorageReference = FirebaseStorage.getInstance().getReference("uploads");
 
         mSpinner = findViewById(R.id.spinner_types);
         mSendButton = findViewById(R.id.send_button);
-        mImageButton = findViewById(R.id.button_choose_image);
+        mChooseImage = findViewById(R.id.choose_image);
+        mPreviewImage = findViewById(R.id.image_preview);
         mOwner = findViewById(R.id.owner);
         mBrand = findViewById(R.id.brand);
         mModel = findViewById(R.id.model);
@@ -89,7 +106,7 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
         });
 
 
-        mImageButton.setOnClickListener(new View.OnClickListener() {
+        mChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OpenFileChooser();
@@ -141,8 +158,8 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             mImageUri = data.getData();
-            mImageButton.setText("IMAGE PICKED");
-
+            mChooseImage.setText("IMAGE PICKED");
+            mPreviewImage.setImageURI(mImageUri);
         }
     }
 
@@ -155,6 +172,8 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
         Street = mStreet.getText().toString();
         City = mCity.getText().toString();
 
+        uploadFile();
+
 
         if (Owner.isEmpty() || Type.isEmpty() || Brand.isEmpty() || Model.isEmpty() || Street.isEmpty() || City.isEmpty()) {
             Toast.makeText(Form.this, R.string.message_empty_fields, Toast.LENGTH_LONG).show();
@@ -166,6 +185,7 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
             myAlertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
+
 
                     ConvertToCoordinates(Street + City);
                     theft = new Theft(Owner, Type, Brand, Model, Street, City, Latitude, Longitude);
@@ -185,6 +205,54 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
             myAlertBuilder.show();
 
+        }
+
+    }
+
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile() {
+
+        if (mImageUri != null) {
+            StorageReference fileReference = mStorageReference.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
+
+            fileReference.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(Form.this, "Succes", Toast.LENGTH_SHORT).show();
+
+
+                            Upload upload = new Upload("naam", taskSnapshot.getUploadSessionUri().toString());
+                            String UploadId = mDatabaseRef.push().getKey(); // get uieke di from methode
+                            mDatabaseRef.child(UploadId).setValue(upload); // zet de data erin
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            Toast.makeText(Form.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(Form.this, "progess", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+        } else {
+
+            // doe iets voor geen foto
         }
 
     }
