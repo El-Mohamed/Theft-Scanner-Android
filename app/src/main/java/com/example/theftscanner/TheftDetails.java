@@ -6,6 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,46 +26,68 @@ public class TheftDetails extends AppCompatActivity {
     Adapter adapter;
 
     DatabaseReference mDatabaseRef;
-    List<Upload> mUploads;
-
+    List<Theft> mThefts;
+    Theft myTheft;
+    EditText mCity;
+    Button mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theft_details);
-
+        mButton = findViewById(R.id.filter_button_details);
+        mCity = findViewById(R.id.preferred_city_details);
         recyclerView = findViewById(R.id.recyclerview_details);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mUploads = new ArrayList<>();
+        mThefts = new ArrayList<>();
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Thefts");
 
 
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
-
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+        mButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnap : dataSnapshot.getChildren()) {
-
-                    Upload upload = postSnap.getValue(Upload.class);
-                    mUploads.add(upload);
+            public void onClick(View v) {
 
 
+                mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        String City = mCity.getText().toString().toLowerCase();
+
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                            String city = snapshot.child("city").getValue().toString().toLowerCase();
+                            if (city.equals(City)) {
+
+                                myTheft = snapshot.getValue(Theft.class);
+                                mThefts.add(myTheft);
+                                String type = snapshot.child("type").getValue().toString();
+                                Log.d("testje", type);
 
 
-                }
+                            }
 
-                adapter = new Adapter(TheftDetails.this, mUploads);
-                recyclerView.setAdapter(adapter);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+
+                        adapter = new Adapter(TheftDetails.this, mThefts);
+                        recyclerView.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
 
             }
         });
 
 
     }
+
+
 }

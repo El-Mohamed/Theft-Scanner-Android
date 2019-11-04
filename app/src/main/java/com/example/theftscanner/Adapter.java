@@ -17,12 +17,12 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private Context mContext;
-    private List<Upload> mUploads;
+    private List<Theft> allThefts;
 
 
-    public Adapter(Context context, List<Upload> uploads) {
+    public Adapter(Context context, List<Theft> thefts) {
         mContext = context;
-        mUploads = uploads;
+        allThefts = thefts;
     }
 
 
@@ -36,13 +36,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Upload currentUpload = mUploads.get(position);
-        Picasso.get().load(currentUpload.getmImageUri()).into(holder.mImage);
+        Theft tempTheft = allThefts.get(position);
+        Picasso.get().load(tempTheft.getImageURL()).into(holder.mImage);
+        holder.mBrand.setText(tempTheft.getBrand());
+        holder.mModel.setText(tempTheft.getModel());
+        holder.mStreet.setText(tempTheft.getStreet());
+        holder.mCity.setText(tempTheft.getCity());
     }
 
     @Override
     public int getItemCount() {
-        return mUploads.size();
+        return allThefts.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

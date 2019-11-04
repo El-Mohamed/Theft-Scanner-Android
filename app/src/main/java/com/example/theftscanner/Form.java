@@ -51,13 +51,13 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
     Button mSendButton;
     TextView mChooseImage;
     EditText mOwner, mBrand, mModel, mStreet, mCity;
-    String Owner, Type, Brand, Model, Street, City;
+    String Owner, Type, Brand, Model, Street, City, ImageURL, ID;
     double Latitude, Longitude;
     Theft theft;
     long NumberOfChilds = 0;
 
 
-    Upload upload;
+
     private Uri mImageUri;
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -166,6 +166,15 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
 
     public void SendToDatabase(View view) {
+
+        uploadFile();
+
+    }
+
+
+
+    public void MYFUCNTION() {
+
         mCity.onEditorAction(EditorInfo.IME_ACTION_DONE);
         Owner = mOwner.getText().toString();
         Brand = mBrand.getText().toString();
@@ -173,7 +182,6 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
         Street = mStreet.getText().toString();
         City = mCity.getText().toString();
 
-        uploadFile();
 
 
         if (Owner.isEmpty() || Type.isEmpty() || Brand.isEmpty() || Model.isEmpty() || Street.isEmpty() || City.isEmpty()) {
@@ -187,11 +195,10 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
             myAlertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
 
-
                     ConvertToCoordinates(Street + City);
-                    theft = new Theft(Owner, Type, Brand, Model, Street, City, Latitude, Longitude);
-                    MyReference.child(String.valueOf(NumberOfChilds + 1)).setValue(theft);
-
+                    ID = String.valueOf(NumberOfChilds + 1);
+                    theft = new Theft(Owner, Type, Brand, Model, Street, City,ImageURL, ID, Latitude, Longitude);
+                    MyReference.child(ID).setValue(theft);
                     Intent intent = new Intent(Form.this, Dashboard.class);
                     startActivity(intent);
                     Toast.makeText(Form.this, R.string.message_successfully, Toast.LENGTH_LONG).show();
@@ -208,7 +215,15 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
         }
 
+
     }
+
+
+
+
+
+
+
 
 
     private String getFileExtension(Uri uri) {
@@ -237,12 +252,11 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri download = task.getResult();
-                        upload = new Upload("Image", download.toString());
-                        String UploadId = mDatabaseRef.push().getKey();
-                        mDatabaseRef.child(UploadId).setValue(upload);
+                        ImageURL = download.toString();
                     } else {
-                        // Handle failures
+                        ImageURL = "noImage";
                     }
+                    MYFUCNTION();
                 }
             });
         }
