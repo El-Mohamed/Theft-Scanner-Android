@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -25,15 +24,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -57,6 +56,8 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
     Theft theft;
     long NumberOfChilds = 0;
 
+
+    Upload upload;
     private Uri mImageUri;
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -219,40 +220,31 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
     private void uploadFile() {
 
         if (mImageUri != null) {
-            StorageReference fileReference = mStorageReference.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
+            final StorageReference fileReference = mStorageReference.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
+            UploadTask uploadTask = fileReference.putFile(mImageUri);
 
-            fileReference.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(Form.this, "Succes", Toast.LENGTH_SHORT).show();
-
-
-                            Upload upload = new Upload("naam", taskSnapshot.getUploadSessionUri().toString());
-                            String UploadId = mDatabaseRef.push().getKey(); // get uieke di from methode
-                            mDatabaseRef.child(UploadId).setValue(upload); // zet de data erin
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            Toast.makeText(Form.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-
-
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(Form.this, "progess", Toast.LENGTH_SHORT).show();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
 
                 }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri download = task.getResult();
+                        upload = new Upload("Image", download.toString());
+                        String UploadId = mDatabaseRef.push().getKey();
+                        mDatabaseRef.child(UploadId).setValue(upload);
+                    } else {
+                        // Handle failures
+                    }
+                }
             });
-
-        } else {
-
-            // doe iets voor geen foto
         }
 
     }

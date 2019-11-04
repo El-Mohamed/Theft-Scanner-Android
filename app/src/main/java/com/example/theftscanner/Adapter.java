@@ -4,56 +4,45 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
-    private LayoutInflater layoutInflater;
-    private List<String> allBrands;
-    private List<String> allModels;
-    private List<String> allStreets;
-    private List<String> allCitys;
+    private Context mContext;
+    private List<Upload> mUploads;
 
-    Adapter(Context context, List<String> AllBrands,List<String> AllModels,List<String> AllStreets,List<String> AllCitys) {
 
-        this.layoutInflater = LayoutInflater.from(context);
-        this.allBrands = AllBrands;
-        this.allModels = AllModels;
-        this.allStreets = AllStreets;
-        this.allCitys = AllCitys;
-
+    public Adapter(Context context, List<Upload> uploads) {
+        mContext = context;
+        mUploads = uploads;
     }
+
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.viewholder_details, parent, false);
-        return new ViewHolder(view);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.viewholder_details, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        String tempBrand = allBrands.get(position);
-        String tempModel = allModels.get(position);
-        String tempStreet = allStreets.get(position);
-        String tempCity = allCitys.get(position);
-
-        holder.mBrand.setText(tempBrand);
-        holder.mModel.setText(tempModel);
-        holder.mStreet.setText(tempStreet);
-        holder.mCity.setText(tempCity);
-
+        Upload currentUpload = mUploads.get(position);
+        Picasso.get().load(currentUpload.getmImageUri()).into(holder.mImage);
     }
 
     @Override
     public int getItemCount() {
-        return allBrands.size();
+        return mUploads.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,6 +51,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         TextView mModel;
         TextView mStreet;
         TextView mCity;
+        public ImageView mImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +59,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             mModel = itemView.findViewById(R.id.detail2);
             mStreet = itemView.findViewById(R.id.detail3);
             mCity = itemView.findViewById(R.id.detail4);
+            mImage = itemView.findViewById(R.id.vehicle_image);
         }
     }
 
