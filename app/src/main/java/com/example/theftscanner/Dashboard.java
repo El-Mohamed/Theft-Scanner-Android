@@ -86,6 +86,7 @@ public class Dashboard extends AppCompatActivity {
             case R.id.action_profile:
                 Intent intent = new Intent(Dashboard.this, Profile.class);
                 startActivity(intent);
+                finish();
                 return true;
             default:
                 // Do nothing

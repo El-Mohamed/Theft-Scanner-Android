@@ -44,7 +44,7 @@
         android:background="@drawable/button_layout"
         android:fontFamily="@font/righteous"
         android:paddingVertical="3sp"
-        android:text="BUTTON"
+        android:text="LOG OUT"
         android:textColor="@android:color/white"
         android:textSize="25sp"
         />
