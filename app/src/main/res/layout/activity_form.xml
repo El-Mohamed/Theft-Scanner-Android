@@ -27,6 +27,20 @@
 
             <TextView
                 style="@style/Form_Title"
+                android:text="@string/title_3" />
+
+            <EditText
+                android:id="@+id/street"
+                style="@style/Form_EditText"
+                android:hint="@string/hint_street_number" />
+
+            <EditText
+                android:id="@+id/city"
+                style="@style/Form_EditText"
+                android:hint="@string/hint_city" />
+
+            <TextView
+                style="@style/Form_Title"
                 android:text="@string/title_2" />
 
             <Spinner
@@ -56,19 +70,33 @@
                 style="@style/Form_EditText"
                 android:hint="@string/hint_model" />
 
-            <TextView
-                style="@style/Form_Title"
-                android:text="@string/title_3" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30sp"
+                android:layout_marginTop="15sp"
+                android:layout_marginBottom="30sp"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/street"
-                style="@style/Form_EditText"
-                android:hint="@string/hint_street_number" />
+                <TextView
+                    android:id="@+id/choose_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:fontFamily="@font/righteous"
+                    android:text="NO IMAGE SELECTED"
+                    android:textColor="@android:color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/city"
-                style="@style/Form_EditText"
-                android:hint="@string/hint_city" />
+                <ImageView
+                    android:id="@+id/image_preview"
+                    android:layout_width="75sp"
+                    android:layout_height="75sp"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="10sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -90,8 +118,3 @@
         android:textSize="25sp" />
 
 </LinearLayout>
-
-
-
-
-
