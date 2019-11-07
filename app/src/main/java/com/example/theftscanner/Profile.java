@@ -19,7 +19,6 @@ public class Profile extends AppCompatActivity {
     TextView mCurrentID;
     Button mButton;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,19 +31,16 @@ public class Profile extends AppCompatActivity {
         mCurrentID = findViewById(R.id.email_id);
         mButton = findViewById(R.id.logout_login);
 
-
         if (user != null) {
             String CurrentEmail = user.getEmail();
             String CurrentEmailID = user.getUid();
             mCurrentAccount.setText(CurrentEmail);
             mCurrentID.setText(CurrentEmailID);
-            mButton.setText("LOG OUT");
         } else {
-            mCurrentAccount.setText("Guest");
-            mCurrentID.setText("");
-            mButton.setText("LOG IN");
+            Intent intent = new Intent(Profile.this, Authentication.class);
+            startActivity(intent);
+            finish();
         }
-
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,14 +51,12 @@ public class Profile extends AppCompatActivity {
                     Intent intent = new Intent(Profile.this, Dashboard.class);
                     startActivity(intent);
                     finish();
-                } else {
-                    Intent intent = new Intent(Profile.this, Authentication.class);
-                    startActivity(intent);
-                    finish();
                 }
 
             }
+
         });
 
     }
+
 }
