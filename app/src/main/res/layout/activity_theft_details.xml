@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/preferred_city_details"
+            android:id="@+id/search_text_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="20sp"
@@ -28,7 +28,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/filter_button_details"
+            android:id="@+id/search_button_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_layout"
