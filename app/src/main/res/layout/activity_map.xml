@@ -21,30 +21,13 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/preferred_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20sp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/Red"
-            android:fontFamily="@font/righteous"
-            android:hint="CITY"
-            android:textColor="@android:color/white"
-            android:textColorHint="@color/Red"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:maxLines="1"/>
+            android:id="@+id/search_text_map"
+            style="@style/Text_SearchBar" />
 
         <Button
-            android:id="@+id/filter_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_layout"
-            android:fontFamily="@font/righteous"
+            android:id="@+id/search_button_map"
             android:text="SEARCH"
-            android:textColor="@android:color/white"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            style="@style/Button_SearchBar" />
 
     </LinearLayout>
 

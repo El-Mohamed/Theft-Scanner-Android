@@ -27,13 +27,13 @@ public class Statistics extends AppCompatActivity {
 
     private DatabaseReference Reference;
 
-    EditText mFilter;
+    EditText mSearchText;
+    String Filter;
+    PieChart pieChart;
 
     String[] VehicleTypes;
     int[] Counts;
-    String Filter;
 
-    PieChart pieChart;
     PieDataSet dataSet;
     ArrayList<PieEntry> dataValues;
 
@@ -52,8 +52,9 @@ public class Statistics extends AppCompatActivity {
         setContentView(R.layout.activity_statistics);
 
         Reference = FirebaseDatabase.getInstance().getReference().child("Thefts");
+
         pieChart = findViewById(R.id.pieChart);
-        mFilter = findViewById(R.id.preferred_city_stats);
+        mSearchText = findViewById(R.id.search_text_statistics);
 
         VehicleTypes = getResources().getStringArray(R.array.vehicle_array);
         Counts = new int[7];
@@ -67,13 +68,14 @@ public class Statistics extends AppCompatActivity {
     }
 
 
-    public void SetChart(View view) {
+    public void CalculateStatistics(View view) {
 
         for (int i = 0; i < VehicleTypes.length; i++) {
             Counts[i] = 0;
         }
-        mFilter.onEditorAction(EditorInfo.IME_ACTION_DONE);
-        Filter = mFilter.getText().toString();
+
+        mSearchText.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        Filter = mSearchText.getText().toString();
 
         if (!Filter.isEmpty()) {
 
@@ -113,31 +115,11 @@ public class Statistics extends AppCompatActivity {
                             EndColors[ColorCounter] = ColorLabels[index];
                             ColorCounter++;
                             dataValues.add(new PieEntry(val, VehicleTypes[index]));
+
                         }
                     }
 
-                    dataSet = new PieDataSet(dataValues, "");
-                    dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                    dataSet.setValueTextSize(15);
-                    dataSet.setColors(ColorLabels);
-
-
-                    PieData pieData = new PieData(dataSet);
-                    pieChart.getDescription().setText("");
-                    pieChart.setEntryLabelTextSize(15);
-                    pieChart.setHoleRadius(50);
-                    pieChart.setTransparentCircleRadius(55);
-                    pieChart.setHoleColor(Color.TRANSPARENT);
-                    Legend legend = pieChart.getLegend();
-                    legend.setTextColor(Color.WHITE);
-                    legend.setTextSize(15);
-                    legend.setWordWrapEnabled(true);
-                    legend.setXEntrySpace(14);
-                    legend.setForm(Legend.LegendForm.CIRCLE);
-
-                    pieChart.setData(pieData);
-                    pieChart.invalidate();
-                    pieChart.animateXY(1500, 1500);
+                    SetChart();
 
                 }
 
@@ -150,6 +132,35 @@ public class Statistics extends AppCompatActivity {
         }
 
     }
+
+    public void SetChart() {
+
+        dataSet = new PieDataSet(dataValues, "");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setValueTextSize(15);
+        dataSet.setColors(ColorLabels);
+        PieData pieData = new PieData(dataSet);
+
+        pieChart.getDescription().setText("");
+        pieChart.setEntryLabelTextSize(15);
+        pieChart.setHoleRadius(50);
+        pieChart.setTransparentCircleRadius(55);
+        pieChart.setHoleColor(Color.TRANSPARENT);
+        pieChart.setUsePercentValues(true);
+
+        Legend legend = pieChart.getLegend();
+        legend.setTextColor(Color.WHITE);
+        legend.setTextSize(15);
+        legend.setWordWrapEnabled(true);
+        legend.setXEntrySpace(14);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+        pieChart.animateXY(1500, 1500);
+
+    }
+
 }
 
 

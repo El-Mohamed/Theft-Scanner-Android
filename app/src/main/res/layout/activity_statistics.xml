@@ -14,41 +14,21 @@ tools:context=".Statistics">
     android:orientation="horizontal">
 
     <EditText
-        android:id="@+id/preferred_city_stats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20sp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/Red"
-        android:fontFamily="@font/righteous"
-        android:maxLines="1"
-        android:textColor="@android:color/white"
-        android:textColorHint="@color/Red"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+        android:id="@+id/search_text_statistics"
+        style="@style/Text_SearchBar" />
 
     <Button
-        android:id="@+id/filter_button_stats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_layout"
-        android:fontFamily="@font/righteous"
+        android:id="@+id/search_button_statistics"
         android:text="SEARCH"
-        android:textColor="@android:color/white"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:onClick="SetChart"/>
+        android:onClick="CalculateStatistics"
+        style="@style/Button_SearchBar" />
 
 </LinearLayout>
-
-
-
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20sp"/>
-
 
 </LinearLayout>

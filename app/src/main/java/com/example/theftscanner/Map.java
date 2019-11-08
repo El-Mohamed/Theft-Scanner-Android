@@ -58,8 +58,8 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mFilterButton = findViewById(R.id.filter_button);
-        mFilter = findViewById(R.id.preferred_city);
+        mFilterButton = findViewById(R.id.search_button_map);
+        mFilter = findViewById(R.id.search_text_map);
         Reference = FirebaseDatabase.getInstance().getReference().child("Thefts");
         VehicleTypes = getResources().getStringArray(R.array.vehicle_array);
     }
