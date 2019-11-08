@@ -139,9 +139,10 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/righteous</item>
-        <item name="android:layout_marginVertical">5sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="Text_SearchBar">
@@ -151,7 +152,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:backgroundTint">@color/Red</item>
         <item name="android:fontFamily">@font/righteous</item>
-        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorHint">@color/Red</item>
         <item name="android:textSize">17sp</item>

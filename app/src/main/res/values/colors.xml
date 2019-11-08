@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF0000</color>
     <color name="BackgroundSplashScreen">#ffffff</color>
     <color name="BackgroundColorDark">#202124</color>
+    <color name="BackgroundColorLight">#525355</color>
     <color name="Red">#FF0000</color>
 
 </resources>

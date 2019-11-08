@@ -38,10 +38,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         Theft tempTheft = allThefts.get(position);
         Picasso.get().load(tempTheft.getImageURL()).into(holder.mImage);
-        holder.mBrand.setText(tempTheft.getBrand());
-        holder.mModel.setText(tempTheft.getModel());
-        holder.mStreet.setText(tempTheft.getStreet());
-        holder.mCity.setText(tempTheft.getCity());
+        holder.mBrand.setText(tempTheft.getBrand().toUpperCase());
+        holder.mModel.setText(tempTheft.getModel().toUpperCase());
+        holder.mStreet.setText(tempTheft.getStreet().toUpperCase());
+        holder.mCity.setText(tempTheft.getCity().toUpperCase());
     }
 
     @Override
