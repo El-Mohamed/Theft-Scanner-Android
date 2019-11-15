@@ -14,13 +14,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class TheftAdapter extends RecyclerView.Adapter<TheftAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Theft> allThefts;
 
 
-    public Adapter(Context context, List<Theft> thefts) {
+    public TheftAdapter(Context context, List<Theft> thefts) {
         mContext = context;
         allThefts = thefts;
     }

@@ -5,46 +5,85 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TheftDetails extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    Adapter adapter;
+    DatabaseReference mDatabaseReference;
+
+    RecyclerView mRecyclerView;
+    TheftAdapter mAdapter;
 
     EditText mSearchText;
     Button mSearchButton;
 
-    DatabaseReader databaseReader;
-    List<Theft> mThefts;
+    Theft tempTheft;
+    List<Theft> allThefts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theft_details);
+
         mSearchButton = findViewById(R.id.search_button_details);
         mSearchText = findViewById(R.id.search_text_details);
 
-        recyclerView = findViewById(R.id.recyclerview_details);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView = findViewById(R.id.recyclerview_details);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mThefts = new ArrayList<>();
-        databaseReader = new DatabaseReader();
+        allThefts = new ArrayList<>();
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Thefts");
 
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String City = mSearchText.getText().toString();
-                mThefts = databaseReader.GetAllThefts(City);
+                allThefts.clear();
                 KeyboardHelper.hideKeyboard(TheftDetails.this);
-                adapter = new Adapter(TheftDetails.this, mThefts);
-                recyclerView.setAdapter(adapter);
+                String inputText = mSearchText.getText().toString();
+                getThefts(inputText);
+
+            }
+        });
+
+    }
+    
+    private void getThefts(final String inputCity) {
+
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    String city = snapshot.child("city").getValue().toString().toLowerCase();
+                    if (city.equals(inputCity)) {
+                        tempTheft = snapshot.getValue(Theft.class);
+                        allThefts.add(tempTheft);
+                    }
+
+                }
+
+                mAdapter = new TheftAdapter(TheftDetails.this, allThefts);
+                mRecyclerView.setAdapter(mAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
