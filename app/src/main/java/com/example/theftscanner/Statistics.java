@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -25,19 +26,19 @@ import java.util.ArrayList;
 
 public class Statistics extends AppCompatActivity {
 
-    private DatabaseReference Reference;
+    private DatabaseReference mDatabaseReference;
 
     EditText mSearchText;
-    String Filter;
+    Button mSearchButton;
     PieChart pieChart;
 
-    String[] VehicleTypes;
-    int[] Counts;
+    String[] vehicleTypes;
+    int[] counts;
 
     PieDataSet dataSet;
     ArrayList<PieEntry> dataValues;
 
-    int[] ColorLabels = {Color.rgb(229, 38, 30),
+    int[] colorLabels = {Color.rgb(229, 38, 30),
             Color.rgb(235, 117, 50),
             Color.rgb(163, 224, 71),
             Color.rgb(209, 58, 231),
@@ -51,35 +52,43 @@ public class Statistics extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
-        Reference = FirebaseDatabase.getInstance().getReference().child("Thefts");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Thefts");
 
         pieChart = findViewById(R.id.pieChart);
         mSearchText = findViewById(R.id.search_text_statistics);
+        mSearchButton = findViewById(R.id.search_button_statistics);
 
-        VehicleTypes = getResources().getStringArray(R.array.vehicle_array);
-        Counts = new int[7];
+        vehicleTypes = getResources().getStringArray(R.array.vehicle_array);
+        counts = new int[7];
 
-        for (int i = 0; i < VehicleTypes.length; i++) {
-            Counts[i] = 0;
+        for (int i = 0; i < vehicleTypes.length; i++) {
+            counts[i] = 0;
         }
 
         pieChart.setNoDataText("Enter a city in the search bar.");
 
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputText = mSearchText.getText().toString();
+                getStatistics(inputText);
+            }
+        });
+
     }
 
 
-    public void CalculateStatistics(View view) {
+    public void getStatistics(final String inputCity) {
 
-        for (int i = 0; i < VehicleTypes.length; i++) {
-            Counts[i] = 0;
+        for (int i = 0; i < vehicleTypes.length; i++) {
+            counts[i] = 0;
         }
 
         mSearchText.onEditorAction(EditorInfo.IME_ACTION_DONE);
-        Filter = mSearchText.getText().toString();
 
-        if (!Filter.isEmpty()) {
+        if (!inputCity.isEmpty()) {
 
-            Reference.addValueEventListener(new ValueEventListener() {
+            mDatabaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -87,14 +96,14 @@ public class Statistics extends AppCompatActivity {
                         String type = snapshot.child("type").getValue().toString();
                         String city = snapshot.child("city").getValue().toString();
 
-                        if (Filter.equals(city)) {
+                        if (city.equals(inputCity)) {
 
                             for (int i = 0; i < 7; i++) {
 
-                                if (type.equals(VehicleTypes[i])) {
-                                    int oldValue = Counts[i];
+                                if (type.equals(vehicleTypes[i])) {
+                                    int oldValue = counts[i];
                                     int newValue = oldValue + 1;
-                                    Counts[i] = newValue;
+                                    counts[i] = newValue;
                                 }
 
                             }
@@ -102,24 +111,8 @@ public class Statistics extends AppCompatActivity {
                         }
                     }
 
-                    dataValues = new ArrayList<>();
-                    int[] EndColors = ColorLabels;
-                    int ColorCounter = 0;
-
-                    for (int index = 0; index < VehicleTypes.length; index++) {
-
-                        int val = Counts[index];
-
-                        if (val != 0) {
-
-                            EndColors[ColorCounter] = ColorLabels[index];
-                            ColorCounter++;
-                            dataValues.add(new PieEntry(val, VehicleTypes[index]));
-
-                        }
-                    }
-
-                    SetChart();
+                    setEntries();
+                    setChart();
 
                 }
 
@@ -133,12 +126,32 @@ public class Statistics extends AppCompatActivity {
 
     }
 
-    public void SetChart() {
+    public void setEntries() {
+
+        dataValues = new ArrayList<>();
+        int[] EndColors = colorLabels;
+        int ColorCounter = 0;
+
+        for (int index = 0; index < vehicleTypes.length; index++) {
+
+            int val = counts[index];
+
+            if (val != 0) {
+
+                EndColors[ColorCounter] = colorLabels[index];
+                ColorCounter++;
+                dataValues.add(new PieEntry(val, vehicleTypes[index]));
+
+            }
+        }
+    }
+
+    public void setChart() {
 
         dataSet = new PieDataSet(dataValues, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         dataSet.setValueTextSize(15);
-        dataSet.setColors(ColorLabels);
+        dataSet.setColors(colorLabels);
         PieData pieData = new PieData(dataSet);
 
         pieChart.getDescription().setText("");

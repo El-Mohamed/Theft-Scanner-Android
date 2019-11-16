@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/BackgroundColorDark"
-android:orientation="vertical"
-tools:context=".Statistics">
-
-<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="20sp"
-    android:orientation="horizontal">
+    android:layout_height="match_parent"
+    android:background="@color/BackgroundColorDark"
+    android:orientation="vertical"
+    tools:context=".Statistics">
 
-    <EditText
-        android:id="@+id/search_text_statistics"
-        style="@style/Text_SearchBar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20sp"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/search_button_statistics"
-        android:text="SEARCH"
-        android:onClick="CalculateStatistics"
-        style="@style/Button_SearchBar" />
+        <EditText
+            android:id="@+id/search_text_statistics"
+            style="@style/Text_SearchBar" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/search_button_statistics"
+            style="@style/Button_SearchBar"
+            android:text="SEARCH" />
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieChart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20sp"/>
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20sp" />
 
 </LinearLayout>
