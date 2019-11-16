@@ -27,11 +27,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -42,33 +39,27 @@ import java.util.List;
 
 public class Form extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    DatabaseReference MyReference;
-    DatabaseReference mDatabaseRef;
-    private StorageReference mStorageReference;
-
+    private static final int PICK_IMAGE_REQUEST = 1;
+    DatabaseReference mDatabaseReference;
+    StorageReference mStorageReference;
     Spinner mSpinner;
     ImageView mPreviewImage;
     Button mSendButton;
     TextView mChooseImage;
     EditText mOwner, mBrand, mModel, mStreet, mCity;
-    String Owner, Type, Brand, Model, Street, City, ImageURL, ID;
-    double Latitude, Longitude;
-    Theft theft;
-    long NumberOfChilds = 0;
-
-
-
-    private Uri mImageUri;
-    private static final int PICK_IMAGE_REQUEST = 1;
+    Uri mImageUri;
+    String owner, type, brand, model, street, city, imageURL;
+    double latitude, longitude;
+    Theft tempTheft;
+    Boolean isValid = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
 
-        MyReference = FirebaseDatabase.getInstance().getReference().child("Thefts");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("uploads");
-        mStorageReference = FirebaseStorage.getInstance().getReference("uploads");
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Thefts");
+        mStorageReference = FirebaseStorage.getInstance().getReference("Images");
 
         mSpinner = findViewById(R.id.spinner_types);
         mSendButton = findViewById(R.id.send_button);
@@ -80,6 +71,31 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
         mStreet = findViewById(R.id.street);
         mCity = findViewById(R.id.city);
 
+        setSpinner();
+
+        mChooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+            }
+        });
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isValid = validateForm();
+
+                if (isValid) {
+                    ShowAlert();
+                }
+            }
+        });
+
+    }
+
+    //Spinner
+
+    private void setSpinner() {
         if (mSpinner != null) {
             mSpinner.setOnItemSelectedListener(this);
         }
@@ -90,36 +106,11 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
         if (mSpinner != null) {
             mSpinner.setAdapter(myAdapter);
         }
-
-
-        MyReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    NumberOfChilds = (dataSnapshot.getChildrenCount());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-        mChooseImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenFileChooser();
-            }
-        });
-
-
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Type = parent.getItemAtPosition(position).toString();
+        type = parent.getItemAtPosition(position).toString();
     }
 
     @Override
@@ -127,26 +118,9 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     }
 
-    public void ConvertToCoordinates(String InputStreet) {
+    // Image
 
-        String location = InputStreet;
-        List<Address> addressList = null;
-
-        if (location != null || !location.equals("")) {
-            Geocoder geocoder = new Geocoder(this);
-            try {
-                addressList = geocoder.getFromLocationName(location, 1);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Address address = addressList.get(0);
-            Latitude = address.getLatitude();
-            Longitude = address.getLongitude();
-        }
-    }
-
-    public void OpenFileChooser() {
+    private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -164,76 +138,89 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
         }
     }
 
-
-    public void SendToDatabase(View view) {
-
-        uploadFile();
-
-    }
-
-
-
-    public void MYFUCNTION() {
-
-        mCity.onEditorAction(EditorInfo.IME_ACTION_DONE);
-        Owner = mOwner.getText().toString();
-        Brand = mBrand.getText().toString();
-        Model = mModel.getText().toString();
-        Street = mStreet.getText().toString();
-        City = mCity.getText().toString();
-
-
-
-        if (Owner.isEmpty() || Type.isEmpty() || Brand.isEmpty() || Model.isEmpty() || Street.isEmpty() || City.isEmpty()) {
-            Toast.makeText(Form.this, R.string.message_empty_fields, Toast.LENGTH_LONG).show();
-        } else {
-
-            AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(Form.this);
-            myAlertBuilder.setTitle("Confirm");
-            myAlertBuilder.setMessage("Are u sure you want to send?");
-
-            myAlertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-
-                    ConvertToCoordinates(Street + City);
-                    ID = String.valueOf(NumberOfChilds + 1);
-                    theft = new Theft(Owner, Type, Brand, Model, Street, City,ImageURL, ID, Latitude, Longitude);
-                    MyReference.child(ID).setValue(theft);
-                    Intent intent = new Intent(Form.this, Dashboard.class);
-                    startActivity(intent);
-                    Toast.makeText(Form.this, R.string.message_successfully, Toast.LENGTH_LONG).show();
-                }
-            });
-
-            myAlertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-
-                }
-            });
-
-            myAlertBuilder.show();
-
-        }
-
-
-    }
-
-
-
-
-
-
-
-
-
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void uploadFile() {
+    // Form
 
+    private Boolean validateForm() {
+        mCity.onEditorAction(EditorInfo.IME_ACTION_DONE);
+
+        owner = mOwner.getText().toString();
+        brand = mBrand.getText().toString();
+        model = mModel.getText().toString();
+        street = mStreet.getText().toString();
+        city = mCity.getText().toString();
+
+        if (owner.isEmpty() || type.isEmpty() || brand.isEmpty() || model.isEmpty() || street.isEmpty() || city.isEmpty()) {
+
+            if (mImageUri == null) {
+                Toast.makeText(Form.this, R.string.message_no_image, Toast.LENGTH_LONG).show();
+                return false;
+            } else {
+                Toast.makeText(Form.this, R.string.message_empty_fields, Toast.LENGTH_LONG).show();
+                return false;
+            }
+        } else {
+
+            return true;
+        }
+    }
+
+    public void ShowAlert() {
+        AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(Form.this);
+        myAlertBuilder.setTitle("Confirm");
+        myAlertBuilder.setMessage("Are u sure you want to send?");
+
+        myAlertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                uploadImage();
+
+                Intent intent = new Intent(Form.this, Dashboard.class);
+                startActivity(intent);
+                Toast.makeText(Form.this, R.string.message_successfully, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        myAlertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        myAlertBuilder.show();
+    }
+
+    // Database
+
+    private void convertToCoordinates(String InputStreet) {
+        String location = InputStreet;
+        List<Address> addressList = null;
+
+        if (location != null || !location.equals("")) {
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Address address = addressList.get(0);
+            latitude = address.getLatitude();
+            longitude = address.getLongitude();
+        }
+    }
+
+    private void uploadInformation() {
+        convertToCoordinates(street + city);
+        tempTheft = new Theft(owner, type, brand, model, street, city, imageURL, latitude, longitude);
+        mDatabaseReference.push().setValue(tempTheft);
+    }
+    
+    private void uploadImage() {
         if (mImageUri != null) {
             final StorageReference fileReference = mStorageReference.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
             UploadTask uploadTask = fileReference.putFile(mImageUri);
@@ -252,11 +239,9 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri download = task.getResult();
-                        ImageURL = download.toString();
-                    } else {
-                        ImageURL = "noImage";
+                        imageURL = download.toString();
                     }
-                    MYFUCNTION();
+                    uploadInformation();
                 }
             });
         }

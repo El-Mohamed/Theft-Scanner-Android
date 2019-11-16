@@ -12,6 +12,7 @@
     <string name="send_button">SEND</string>
     <string name="message_successfully">Your request has been sent!</string>
     <string name="message_empty_fields">Please fill in all fields!</string>
+    <string name="message_no_image">Please select an image!</string>
 
 
     <string-array name="vehicle_array">

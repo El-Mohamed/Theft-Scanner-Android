@@ -2,108 +2,101 @@ package com.example.theftscanner;
 
 public class Theft {
 
-    private String NameOwner;
-    private String Type;
-    private String Brand;
-    private String Model;
-    private String Street;
-    private String City;
-    private String ImageURL;
-    private String id;
+    private String owner;
+    private String type;
+    private String brand;
+    private String model;
+    private String street;
+    private String city;
+    private String imageURL;
 
-    private double Latitude;
-    private double Longitude;
+    private double latitude;
+    private double longitude;
 
 
-    public Theft(String nameOwner, String type, String brand, String model, String street, String city, String imageURL, String ID, double latitude, double longitude) {
-        NameOwner = nameOwner;
-        Type = type;
-        Brand = brand;
-        Model = model;
-        Street = street;
-        City = city;
-        ImageURL = imageURL;
-        id = ID;
-        Latitude = latitude;
-        Longitude = longitude;
+    public Theft(String owner, String type, String brand, String model, String street, String city, String imageURL, double latitude, double longitude) {
+        this.owner = owner;
+        this.type = type;
+        this.brand = brand;
+        this.model = model;
+        this.street = street;
+        this.city = city;
+        this.imageURL = imageURL;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
+
     public Theft(){}
 
-    public String getImageURL() {return ImageURL;}
-
-    public void setNameOwner(String nameOwner) {
-        NameOwner = nameOwner;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setType(String type) {
-        Type = type;
-    }
-
-    public void setBrand(String brand) {
-        Brand = brand;
-    }
-
-    public void setModel(String model) {
-        Model = model;
-    }
-
-    public void setStreet(String street) {
-        Street = street;
-    }
-
-    public void setCity(String city) {
-        City = city;
-    }
-
-    public void setImageURL(String imageURL) {
-        ImageURL = imageURL;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setLatitude(double latitude) {
-        Latitude = latitude;
-    }
-
-    public void setLongitude(double longitude) {
-        Longitude = longitude;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public double getLatitude() {
-        return Latitude;
-    }
-
-    public double getLongitude() {
-        return Longitude;
-    }
-
-    public String getNameOwner() {
-        return NameOwner;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public String getType() {
-        return Type;
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getBrand() {
-        return Brand;
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getModel() {
-        return Model;
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getStreet() {
-        return Street;
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getCity() {
-        return City;
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
