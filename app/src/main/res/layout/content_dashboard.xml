@@ -10,7 +10,6 @@
     tools:context=".Dashboard"
     tools:showIn="@layout/activity_dashboard">
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,13 +35,12 @@
             android:columnCount="1"
             android:rowCount="6">
 
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/map_card"
                 style="@style/Card_Menu"
+                app:cardBackgroundColor="@color/BackgroundColorDark"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/BackgroundColorDark">
+                app:cardElevation="8dp">
 
                 <LinearLayout style="@style/Card_Menu_LinearLayout">
 
@@ -63,11 +61,11 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/add_card"
+                android:id="@+id/form_card"
                 style="@style/Card_Menu"
+                app:cardBackgroundColor="@color/BackgroundColorDark"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/BackgroundColorDark">
+                app:cardElevation="8dp">
 
                 <LinearLayout style="@style/Card_Menu_LinearLayout">
 
@@ -90,9 +88,9 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/list_card"
                 style="@style/Card_Menu"
+                app:cardBackgroundColor="@color/BackgroundColorDark"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/BackgroundColorDark">
+                app:cardElevation="8dp">
 
                 <LinearLayout style="@style/Card_Menu_LinearLayout">
 
@@ -115,9 +113,9 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/stats_card"
                 style="@style/Card_Menu"
+                app:cardBackgroundColor="@color/BackgroundColorDark"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="@color/BackgroundColorDark">
+                app:cardElevation="8dp">
 
                 <LinearLayout style="@style/Card_Menu_LinearLayout">
 
@@ -136,7 +134,6 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
 
         </GridLayout>
 

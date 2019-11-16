@@ -13,13 +13,7 @@ import androidx.cardview.widget.CardView;
 
 public class Dashboard extends AppCompatActivity {
 
-
-    private CardView card2;
-    private CardView card3;
-    private CardView card4;
-    private CardView card5;
-
-
+    CardView mCardMap, mCardForm, mCardList, mCardStats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +22,12 @@ public class Dashboard extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        card2 = findViewById(R.id.map_card);
-        card3 = findViewById(R.id.add_card);
-        card4 = findViewById(R.id.list_card);
-        card5 = findViewById(R.id.stats_card);
+        mCardMap = findViewById(R.id.map_card);
+        mCardForm = findViewById(R.id.form_card);
+        mCardList = findViewById(R.id.list_card);
+        mCardStats = findViewById(R.id.stats_card);
 
-
-        card2.setOnClickListener(new View.OnClickListener() {
+        mCardMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, Map.class);
@@ -42,7 +35,7 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        card3.setOnClickListener(new View.OnClickListener() {
+        mCardForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, Form.class);
@@ -50,8 +43,7 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-
-        card4.setOnClickListener(new View.OnClickListener() {
+        mCardList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, TheftDetails.class);
@@ -59,8 +51,7 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-
-        card5.setOnClickListener(new View.OnClickListener() {
+        mCardStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Dashboard.this, Statistics.class);
@@ -70,13 +61,11 @@ public class Dashboard extends AppCompatActivity {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -86,7 +75,6 @@ public class Dashboard extends AppCompatActivity {
             case R.id.action_profile:
                 Intent intent = new Intent(Dashboard.this, Profile.class);
                 startActivity(intent);
-                finish();
                 return true;
             default:
                 // Do nothing
@@ -94,6 +82,7 @@ public class Dashboard extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
     }
+
 }
 
 
