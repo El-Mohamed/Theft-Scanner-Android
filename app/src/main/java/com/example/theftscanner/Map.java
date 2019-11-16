@@ -25,18 +25,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Map extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    Button mFilterButton;
-    EditText mFilter;
-    String Filter;
+    Circle tempCircle;
+    LatLng tempLocation;
+    boolean toAnimateStart = true;
 
-    private DatabaseReference Reference;
+    DatabaseReference mDatabaseReference;
 
-    boolean ToAnimateStart = true;
+    Button mSearchButton;
+    EditText mSearchText;
 
-    int[] ColorLabels = {Color.rgb(229, 38, 30),
+    List<Theft> allThefts;
+    Theft tempTheft;
+    List<LatLng> allMarkers;
+    String[] vehicleTypes;
+    int[] colorLabels = {Color.rgb(229, 38, 30),
             Color.rgb(235, 117, 50),
             Color.rgb(163, 224, 71),
             Color.rgb(209, 58, 231),
@@ -44,11 +52,6 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
             Color.rgb(52, 187, 230),
             Color.rgb(73, 218, 154),
     };
-
-
-    String[] VehicleTypes;
-    Circle tempCircle;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,96 +61,125 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mFilterButton = findViewById(R.id.search_button_map);
-        mFilter = findViewById(R.id.search_text_map);
-        Reference = FirebaseDatabase.getInstance().getReference().child("Thefts");
-        VehicleTypes = getResources().getStringArray(R.array.vehicle_array);
+        mSearchButton = findViewById(R.id.search_button_map);
+        mSearchText = findViewById(R.id.search_text_map);
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Thefts");
+        vehicleTypes = getResources().getStringArray(R.array.vehicle_array);
+        allThefts = new ArrayList<>();
+        allMarkers = new ArrayList<>();
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        if (ToAnimateStart) {
-            LatLng APHogeschool = new LatLng(51.230176, 4.415048);
+        mMap = googleMap;
+        showStartAnimation();
+
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchText.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                String inputText = mSearchText.getText().toString().toLowerCase();
+                mMap.clear();
+                allMarkers.clear();
+                allThefts.clear();
+                getThefts(inputText);
+
+            }
+        });
+
+    }
+
+    private void showStartAnimation() {
+        if (toAnimateStart) {
+            LatLng schoolPosition = new LatLng(51.230176, 4.415048);
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(APHogeschool)
+                    .target(schoolPosition)
                     .zoom(13)
                     .bearing(0)
                     .tilt(60)
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            ToAnimateStart = false;
+            toAnimateStart = false;
         }
+    }
 
+    private void getThefts(final String inputCity) {
 
-        mFilterButton.setOnClickListener(new View.OnClickListener() {
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                mFilter.onEditorAction(EditorInfo.IME_ACTION_DONE);
-                Filter = mFilter.getText().toString().toLowerCase();
-                mMap.clear();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                Reference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        LatLng tempLocation = new LatLng(51.230176, 4.415048);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String city = snapshot.child("city").getValue().toString().toLowerCase();
+                    if (city.equals(inputCity)) {
 
-                            String type = snapshot.child("type").getValue().toString();
-                            String city = snapshot.child("city").getValue().toString().toLowerCase();
+                        tempTheft = snapshot.getValue(Theft.class);
 
-                            String strLatitude = snapshot.child("latitude").getValue().toString();
-                            String strLongitude = snapshot.child("longitude").getValue().toString();
+                        double latitude = tempTheft.getLatitude();
+                        double longitude = tempTheft.getLongitude();
+                        tempLocation = new LatLng(latitude, longitude);
 
-                            double Latitude = Double.parseDouble(strLatitude);
-                            double Longitude = Double.parseDouble(strLongitude);
-
-
-                            if (city.equals(Filter) && !Filter.isEmpty()) {
-
-
-                                tempLocation = new LatLng(Latitude, Longitude);
-
-                                for (int i = 0; i < VehicleTypes.length; i++) {
-
-                                    if (type.equals(VehicleTypes[i])) {
-                                        tempCircle = mMap.addCircle(new CircleOptions()
-                                                .center(tempLocation)
-                                                .radius(10)
-                                                .strokeColor(ColorLabels[i])
-                                                .fillColor(Color.TRANSPARENT));
-                                    }
-
-                                }
-
-                                mMap.addMarker(new MarkerOptions().position(tempLocation).title(type));
-                            }
-
-                        }
-
-
-                        CameraPosition cameraPosition = new CameraPosition.Builder()
-                                .target(tempLocation)
-                                .zoom(13)
-                                .bearing(0)
-                                .tilt(60)
-                                .build();
-                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
+                        allMarkers.add(tempLocation);
+                        allThefts.add(tempTheft);
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                drawMarkers();
+                drawCircles();
 
-                    }
-                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
     }
+
+    private void drawMarkers() {
+
+        for (int i = 0; i < allMarkers.size(); i++) {
+            mMap.addMarker(new MarkerOptions().position(allMarkers.get(i)).title(allThefts.get(i).getType()));
+        }
+
+        if (!allMarkers.isEmpty()) {
+            animateToMarker(tempLocation);
+        }
+    }
+
+    private void drawCircles() {
+
+        for (int i = 0; i < allThefts.size(); i++) {
+
+            for (int j = 0; j < vehicleTypes.length; j++) {
+
+                if (allThefts.get(i).getType().equals(vehicleTypes[j])) {
+                    tempCircle = mMap.addCircle(new CircleOptions()
+                            .center(tempLocation)
+                            .radius(10)
+                            .strokeColor(colorLabels[j])
+                            .fillColor(Color.TRANSPARENT));
+                }
+
+            }
+
+            mMap.addMarker(new MarkerOptions().position(tempLocation).title(allThefts.get(i).getType()));
+        }
+    }
+
+    private void animateToMarker(LatLng lastMarker) {
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(lastMarker)
+                .zoom(13)
+                .bearing(0)
+                .tilt(60)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
 
 }
