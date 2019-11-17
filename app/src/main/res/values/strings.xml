@@ -13,4 +13,8 @@
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_statistics">Statistics</string>
     <string name="title_activity_details">Theft Details</string>
+    <string name="signUpUser">CREATE</string>
+    <string name="signInUser">LOG IN</string>
+    <string name="message_signUp">New user? Create account here</string>
+    <string name="message_signIn">Already have an account? Log in here</string>
 </resources>

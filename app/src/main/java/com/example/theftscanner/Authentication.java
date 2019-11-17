@@ -19,25 +19,22 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Authentication extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mFirebaseAuth;
 
-    String email, password;
     EditText mPassword, mEmail;
-    Button mButton;
-    TextView mText1, mText2;
+    String password, email;
 
-    String ToSignIn = "Already have an account? Log in here";
-    String ToSignUp = "New user? Create account here";
-    String GuestLogin = "Continue as Guest";
-    String ButtonLogIn = "LOG IN";
-    String ButtonCreateAccount = "CREATE";
-    Boolean OnLogInScreen;
+    Button mAuthButton;
+    TextView mMessageText, mGuestText;
+
+    String toSignIn, toSignUp, buttonSignIn, buttonSignUp;
+    Boolean onLogInScreen, isValid;
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(mAuth.getCurrentUser() != null) {
+        if (mFirebaseAuth.getCurrentUser() != null) {
             Intent intent = new Intent(Authentication.this, Dashboard.class);
             startActivity(intent);
             finish();
@@ -50,37 +47,30 @@ public class Authentication extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_authentication);
 
-        mAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
         mPassword = findViewById(R.id.password);
         mEmail = findViewById(R.id.email);
-        mButton = findViewById(R.id.auth_button);
+        mAuthButton = findViewById(R.id.auth_button);
+        mMessageText = findViewById(R.id.messageText);
+        mGuestText = findViewById(R.id.guestText);
 
-        mText1 = findViewById(R.id.text1);
-        mText2 = findViewById(R.id.text2);
+        toSignIn = getResources().getString(R.string.message_signIn);
+        toSignUp = getResources().getString(R.string.message_signUp);
+        buttonSignIn = getResources().getString(R.string.signInUser);
+        buttonSignUp = getResources().getString(R.string.signUpUser);
 
-        mText1.setText(ToSignUp);
-        mText2.setText(GuestLogin);
-        mButton.setText(ButtonLogIn);
-        OnLogInScreen = true;
+        mMessageText.setText(toSignUp);
+        mAuthButton.setText(buttonSignIn);
+        onLogInScreen = true;
 
-        mText1.setOnClickListener(new View.OnClickListener() {
+        mMessageText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPassword.setText("");
-                mEmail.setText("");
-                if (mText1.getText().toString().equals(ToSignUp)) {
-                    mText1.setText(ToSignIn);
-                    mButton.setText(ButtonCreateAccount);
-                    OnLogInScreen = false;
-                } else {
-                    mText1.setText(ToSignUp);
-                    mButton.setText(ButtonLogIn);
-                    OnLogInScreen = true;
-                }
+                updateScreen();
             }
         });
 
-        mText2.setOnClickListener(new View.OnClickListener() {
+        mGuestText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Authentication.this, Dashboard.class);
@@ -89,62 +79,90 @@ public class Authentication extends AppCompatActivity {
             }
         });
 
-        mButton.setOnClickListener(new View.OnClickListener() {
+        mAuthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                email = mEmail.getText().toString();
-                password = mPassword.getText().toString();
+                isValid = validateFields();
 
-                if (email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(Authentication.this, R.string.message_empty_fields, Toast.LENGTH_SHORT).show();
-                } else {
+                if (isValid) {
 
-                    if (OnLogInScreen) {
-                        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(Authentication.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("Logger", "signInWithEmail:success");
-                                    Intent intent = new Intent(Authentication.this, Dashboard.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-
-                                    Log.w("Logger", "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(Authentication.this, "Authentication failed",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
+                    if (onLogInScreen) {
+                        singInUser();
                     } else {
-
-                        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Authentication.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(Authentication.this, "Account created, Log in now", Toast.LENGTH_SHORT).show();
-                                    mPassword.setText("");
-                                    mEmail.setText("");
-                                    mText1.setText(ToSignUp);
-                                    mButton.setText(ButtonLogIn);
-                                    OnLogInScreen = true;
-                                    Log.d("Logger", "createUserWithEmail:success");
-                                } else {
-                                    Log.w("Logger", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(Authentication.this, "Authentication failed",Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-                        });
-
+                        singUpUser();
                     }
-
-
                 }
-
             }
         });
-
     }
+
+    private void updateScreen() {
+
+        mPassword.setText("");
+        mEmail.setText("");
+
+        if (mMessageText.getText().toString().equals(toSignUp)) {
+            mMessageText.setText(toSignIn);
+            mAuthButton.setText(buttonSignUp);
+            onLogInScreen = false;
+        } else {
+            mMessageText.setText(toSignUp);
+            mAuthButton.setText(buttonSignIn);
+            onLogInScreen = true;
+        }
+    }
+
+    private Boolean validateFields() {
+
+        email = mEmail.getText().toString();
+        password = mPassword.getText().toString();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(Authentication.this, R.string.message_empty_fields, Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private void singUpUser() {
+
+        mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Authentication.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(Authentication.this, "Account created, Log in now", Toast.LENGTH_SHORT).show();
+                    mPassword.setText("");
+                    mEmail.setText("");
+                    mMessageText.setText(toSignUp);
+                    mAuthButton.setText(buttonSignIn);
+                    onLogInScreen = true;
+                    Log.d("Logger", "createUserWithEmail:success");
+                } else {
+                    Log.w("Logger", "createUserWithEmail:failure", task.getException());
+                    Toast.makeText(Authentication.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void singInUser() {
+
+        mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(Authentication.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.d("Logger", "signInWithEmail:success");
+                    Intent intent = new Intent(Authentication.this, Dashboard.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Log.w("Logger", "signInWithEmail:failure", task.getException());
+                    Toast.makeText(Authentication.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 }
