@@ -49,9 +49,10 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
     EditText mOwner, mBrand, mModel, mStreet, mCity;
     Uri mImageUri;
     String owner, type, brand, model, street, city, imageURL;
-    double latitude, longitude;
+    double latitude = 0;
+    double longitude = 0;
     Theft tempTheft;
-    Boolean isValid = false;
+    Boolean inputValid = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +84,9 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isValid = validateForm();
-
-                if (isValid) {
-                    ShowAlert();
+                checkUserInput();
+                if (inputValid) {
+                    validateLocation();
                 }
             }
         });
@@ -146,8 +146,9 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     // Form
 
-    private Boolean validateForm() {
+    private void checkUserInput() {
         mCity.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        inputValid = false;
 
         owner = mOwner.getText().toString();
         brand = mBrand.getText().toString();
@@ -156,21 +157,39 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
         city = mCity.getText().toString();
 
         if (owner.isEmpty() || type.isEmpty() || brand.isEmpty() || model.isEmpty() || street.isEmpty() || city.isEmpty()) {
-
-            if (mImageUri == null) {
-                Toast.makeText(Form.this, R.string.message_no_image, Toast.LENGTH_LONG).show();
-                return false;
-            } else {
-                Toast.makeText(Form.this, R.string.message_empty_fields, Toast.LENGTH_LONG).show();
-                return false;
-            }
+            Toast.makeText(Form.this, R.string.message_empty_fields, Toast.LENGTH_LONG).show();
+        } else if (mImageUri == null) {
+            Toast.makeText(Form.this, R.string.message_no_image, Toast.LENGTH_LONG).show();
         } else {
-
-            return true;
+            inputValid = true;
         }
+
     }
 
-    public void ShowAlert() {
+    private void validateLocation() {
+
+        String location = street + city;
+        List<Address> addressList = null;
+        Geocoder geocoder = new Geocoder(this);
+
+        try {
+            addressList = geocoder.getFromLocationName(location, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (addressList.size() != 0) {
+            Address address = addressList.get(0);
+            latitude = address.getLatitude();
+            longitude = address.getLongitude();
+            showAlert();
+        } else {
+            Toast.makeText(Form.this, R.string.message_invalid_street, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void showAlert() {
         AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(Form.this);
         myAlertBuilder.setTitle("Confirm");
         myAlertBuilder.setMessage("Are u sure you want to send?");
@@ -196,30 +215,13 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     // Database
 
-    private void convertToCoordinates(String InputStreet) {
-        String location = InputStreet;
-        List<Address> addressList = null;
 
-        if (location != null || !location.equals("")) {
-            Geocoder geocoder = new Geocoder(this);
-            try {
-                addressList = geocoder.getFromLocationName(location, 1);
+    private void uploadEntry() {
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Address address = addressList.get(0);
-            latitude = address.getLatitude();
-            longitude = address.getLongitude();
-        }
-    }
-
-    private void uploadInformation() {
-        convertToCoordinates(street + city);
         tempTheft = new Theft(owner, type, brand, model, street, city, imageURL, latitude, longitude);
         mDatabaseReference.push().setValue(tempTheft);
     }
-    
+
     private void uploadImage() {
         if (mImageUri != null) {
             final StorageReference fileReference = mStorageReference.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
@@ -241,7 +243,7 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
                         Uri download = task.getResult();
                         imageURL = download.toString();
                     }
-                    uploadInformation();
+                    uploadEntry();
                 }
             });
         }
