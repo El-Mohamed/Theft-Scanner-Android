@@ -5,15 +5,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class Dashboard extends AppCompatActivity {
 
     CardView mCardMap, mCardForm, mCardList, mCardStats;
+
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,8 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         mCardMap = findViewById(R.id.map_card);
         mCardForm = findViewById(R.id.form_card);
@@ -38,8 +45,13 @@ public class Dashboard extends AppCompatActivity {
         mCardForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Dashboard.this, Form.class);
-                startActivity(intent);
+                if(mFirebaseAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(Dashboard.this, Form.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(Dashboard.this, "Please log in to acces the form", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
