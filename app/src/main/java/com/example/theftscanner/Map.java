@@ -231,21 +231,19 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
 
     private void drawCircles() {
 
-        for (int i = 0; i < allThefts.size(); i++) {
+        for (int i = 0; i < allMarkers.size(); i++) {
 
             for (int j = 0; j < vehicleTypes.length; j++) {
 
                 if (allThefts.get(i).getType().equals(vehicleTypes[j])) {
-                    tempCircle = mMap.addCircle(new CircleOptions()
+                    tempLocation = allMarkers.get(i);
+                    mMap.addCircle(new CircleOptions()
                             .center(tempLocation)
                             .radius(10)
                             .strokeColor(colorLabels[j])
                             .fillColor(Color.TRANSPARENT));
                 }
-
             }
-
-            mMap.addMarker(new MarkerOptions().position(tempLocation).title(allThefts.get(i).getType()));
         }
     }
 
