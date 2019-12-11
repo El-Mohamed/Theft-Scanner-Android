@@ -37,7 +37,7 @@ public class TheftAdapter extends RecyclerView.Adapter<TheftAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Theft tempTheft = allThefts.get(position);
-        Picasso.get().load(tempTheft.getImageURL()).into(holder.mImage);
+        Picasso.get().load(tempTheft.getImageURL()).placeholder(R.mipmap.ic_launcher_foreground).into(holder.mImage);
         holder.mBrand.setText(tempTheft.getBrand().toUpperCase());
         holder.mModel.setText(tempTheft.getModel().toUpperCase());
         holder.mStreet.setText(tempTheft.getStreet().toUpperCase());
