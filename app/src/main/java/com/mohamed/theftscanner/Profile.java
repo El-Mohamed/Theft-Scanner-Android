@@ -30,7 +30,7 @@ public class Profile extends AppCompatActivity {
         mCurrentID = findViewById(R.id.email_id);
         mLogoutButton = findViewById(R.id.logout_button);
 
-        checkCurrentUser();
+        showUserDetails();
 
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,9 +42,19 @@ public class Profile extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mFirebaseAuth.getCurrentUser() == null) {
+            Intent intent = new Intent(Profile.this, Authentication.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     private void logoutUser() {
 
-        if (mFirebaseAuth.getCurrentUser() != null) {
+        if (currentUser != null) {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(Profile.this, Dashboard.class);
             startActivity(intent);
@@ -52,18 +62,13 @@ public class Profile extends AppCompatActivity {
         }
     }
 
-    private void checkCurrentUser() {
+    private void showUserDetails() {
 
         if (currentUser != null) {
             String CurrentEmail = currentUser.getEmail();
             String CurrentEmailID = currentUser.getUid();
             mCurrentAccount.setText(CurrentEmail);
             mCurrentID.setText(CurrentEmailID);
-        } else {
-            Intent intent = new Intent(Profile.this, Authentication.class);
-            startActivity(intent);
-            finish();
         }
     }
-
 }
