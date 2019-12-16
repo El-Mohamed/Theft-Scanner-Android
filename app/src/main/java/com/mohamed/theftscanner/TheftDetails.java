@@ -77,8 +77,7 @@ public class TheftDetails extends AppCompatActivity {
 
                 }
 
-                mAdapter = new TheftAdapter(TheftDetails.this, allThefts);
-                mRecyclerView.setAdapter(mAdapter);
+                setRecyclerView();
 
             }
 
@@ -88,6 +87,11 @@ public class TheftDetails extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setRecyclerView() {
+        mAdapter = new TheftAdapter(TheftDetails.this, allThefts);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
 }

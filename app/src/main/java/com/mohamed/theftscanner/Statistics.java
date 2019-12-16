@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Statistics extends AppCompatActivity {
 
@@ -37,6 +38,9 @@ public class Statistics extends AppCompatActivity {
 
     PieDataSet dataSet;
     ArrayList<PieEntry> dataValues;
+
+    Theft tempTheft;
+    List<Theft> allThefts;
 
     int[] colorLabels = {Color.rgb(229, 38, 30),
             Color.rgb(235, 117, 50),
@@ -64,6 +68,8 @@ public class Statistics extends AppCompatActivity {
         for (int i = 0; i < vehicleTypes.length; i++) {
             counts[i] = 0;
         }
+
+        allThefts = new ArrayList<>();
 
         pieChart.setNoDataText("Enter a city in the search bar.");
 
@@ -93,26 +99,17 @@ public class Statistics extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                        String type = snapshot.child("type").getValue().toString();
-                        String city = snapshot.child("city").getValue().toString();
+                        String city = snapshot.child("city").getValue().toString().toLowerCase();
 
                         if (city.equals(inputCity)) {
-
-                            for (int i = 0; i < 7; i++) {
-
-                                if (type.equals(vehicleTypes[i])) {
-                                    int oldValue = counts[i];
-                                    int newValue = oldValue + 1;
-                                    counts[i] = newValue;
-                                }
-
-                            }
-
+                            tempTheft = snapshot.getValue(Theft.class);
+                            allThefts.add(tempTheft);
                         }
                     }
 
-                    setEntries();
-                    setChart();
+                    calculateStatistics();
+                    setPieChartEntries();
+                    setPieChart();
 
                 }
 
@@ -126,7 +123,7 @@ public class Statistics extends AppCompatActivity {
 
     }
 
-    public void setEntries() {
+    public void setPieChartEntries() {
 
         dataValues = new ArrayList<>();
         int[] EndColors = colorLabels;
@@ -146,7 +143,7 @@ public class Statistics extends AppCompatActivity {
         }
     }
 
-    public void setChart() {
+    public void setPieChart() {
 
         dataSet = new PieDataSet(dataValues, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -172,6 +169,21 @@ public class Statistics extends AppCompatActivity {
         pieChart.invalidate();
         pieChart.animateXY(1500, 1500);
 
+    }
+
+    private void calculateStatistics() {
+
+        for (Theft theft: allThefts) {
+
+            for (int i = 0; i < 7; i++) {
+
+                if (theft.getType().equals(vehicleTypes[i])) {
+                    int oldValue = counts[i];
+                    int newValue = oldValue + 1;
+                    counts[i] = newValue;
+                }
+            }
+        }
     }
 
 }
