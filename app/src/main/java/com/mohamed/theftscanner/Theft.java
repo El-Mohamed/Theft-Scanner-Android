@@ -1,4 +1,4 @@
-package com.example.theftscanner;
+package com.mohamed.theftscanner;
 
 public class Theft {
 

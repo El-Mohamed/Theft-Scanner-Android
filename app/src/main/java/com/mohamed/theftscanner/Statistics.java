@@ -1,4 +1,4 @@
-package com.example.theftscanner;
+package com.mohamed.theftscanner;
 
 import android.graphics.Color;
 import android.os.Bundle;

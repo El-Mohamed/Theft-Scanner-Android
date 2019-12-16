@@ -1,4 +1,4 @@
-package com.example.theftscanner;
+package com.mohamed.theftscanner;
 
 import android.content.ContentResolver;
 import android.content.DialogInterface;

@@ -1,4 +1,4 @@
-package com.example.theftscanner;
+package com.mohamed.theftscanner;
 
 import android.os.Bundle;
 import android.view.View;

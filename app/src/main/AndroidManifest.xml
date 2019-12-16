@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.theftscanner">
+    package="com.mohamed.theftscanner">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -12,36 +12,36 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".TheftDetails"
+            android:name="com.mohamed.theftscanner.TheftDetails"
             android:label="@string/title_activity_details"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName="com.mohamed.theftscanner.Dashboard" />
         <activity
-            android:name=".Dashboard"
+            android:name="com.mohamed.theftscanner.Dashboard"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Statistics"
+            android:name="com.mohamed.theftscanner.Statistics"
             android:label="@string/title_activity_statistics"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName="com.mohamed.theftscanner.Dashboard" />
         <activity
-            android:name=".Profile"
+            android:name="com.mohamed.theftscanner.Profile"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".Dashboard" />
-        <activity android:name=".Authentication" />
+            android:parentActivityName="com.mohamed.theftscanner.Dashboard" />
+        <activity android:name="com.mohamed.theftscanner.Authentication" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Map"
-            android:parentActivityName=".Dashboard">
+            android:name="com.mohamed.theftscanner.Map"
+            android:parentActivityName="com.mohamed.theftscanner.Dashboard">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.theftscanner.Dashboard" />
+                android:value="com.mohamed.theftscanner.Dashboard" />
         </activity>
         <activity
-            android:name=".SplashScreen"
+            android:name="com.mohamed.theftscanner.SplashScreen"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,9 +51,9 @@
         </activity>
 
         <activity
-            android:name=".Form"
+            android:name="com.mohamed.theftscanner.Form"
             android:label="@string/title_activity_form"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName="com.mohamed.theftscanner.Dashboard" />
 
         <meta-data
             android:name="preloaded_fonts"
