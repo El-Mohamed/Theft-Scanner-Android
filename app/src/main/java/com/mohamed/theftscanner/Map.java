@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -42,7 +41,6 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
     private boolean mPermissionDenied = false;
 
     private GoogleMap mMap;
-    Circle tempCircle;
     LatLng tempLocation;
     boolean toAnimateStart = true;
 
@@ -86,7 +84,6 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
         mMap = googleMap;
         showStartAnimation();
         mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
 
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -94,9 +91,7 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
             public void onClick(View v) {
                 mSearchText.onEditorAction(EditorInfo.IME_ACTION_DONE);
                 String inputText = mSearchText.getText().toString().toLowerCase();
-                mMap.clear();
-                allMarkers.clear();
-                allThefts.clear();
+                resetMap();
                 getThefts(inputText);
 
             }
@@ -120,15 +115,8 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
 
     @Override
     public boolean onMyLocationButtonClick() {
-        // Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
+        // Camera animates to the user's current position
         return false;
-    }
-
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-       // Toast.makeText(this, "Current location:\n" + location.get, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -152,15 +140,11 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
     protected void onResumeFragments() {
         super.onResumeFragments();
         if (mPermissionDenied) {
-            // Permission was not granted, display error dialog.
             showMissingPermissionError();
             mPermissionDenied = false;
         }
     }
 
-    /**
-     * Displays a dialog with error message explaining that the location permission is missing.
-     */
     private void showMissingPermissionError() {
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
@@ -257,5 +241,9 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-
+    private void resetMap() {
+        mMap.clear();
+        allMarkers.clear();
+        allThefts.clear();
+    }
 }
