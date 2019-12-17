@@ -28,6 +28,7 @@ public class TheftDetails extends AppCompatActivity {
 
     EditText mSearchText;
     Button mSearchButton;
+    String inputText;
 
     Theft tempTheft;
     List<Theft> allThefts;
@@ -52,15 +53,14 @@ public class TheftDetails extends AppCompatActivity {
             public void onClick(View v) {
 
                 allThefts.clear();
-                KeyboardHelper.hideKeyboard(TheftDetails.this);
-                String inputText = mSearchText.getText().toString();
+                readSearchBar();
                 getThefts(inputText);
 
             }
         });
 
     }
-    
+
     private void getThefts(final String inputCity) {
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
@@ -92,6 +92,11 @@ public class TheftDetails extends AppCompatActivity {
     private void setRecyclerView() {
         mAdapter = new TheftAdapter(TheftDetails.this, allThefts);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void readSearchBar() {
+        KeyboardHelper.hideKeyboard(TheftDetails.this);
+        inputText = mSearchText.getText().toString();
     }
 
 }

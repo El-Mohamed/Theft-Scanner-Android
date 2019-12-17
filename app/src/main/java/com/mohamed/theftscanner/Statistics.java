@@ -31,6 +31,7 @@ public class Statistics extends AppCompatActivity {
 
     EditText mSearchText;
     Button mSearchButton;
+    String inputText;
     PieChart pieChart;
 
     String[] vehicleTypes;
@@ -76,7 +77,7 @@ public class Statistics extends AppCompatActivity {
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputText = mSearchText.getText().toString();
+                readSearchBar();
                 getStatistics(inputText);
             }
         });
@@ -173,7 +174,7 @@ public class Statistics extends AppCompatActivity {
 
     private void calculateStatistics() {
 
-        for (Theft theft: allThefts) {
+        for (Theft theft : allThefts) {
 
             for (int i = 0; i < 7; i++) {
 
@@ -184,6 +185,10 @@ public class Statistics extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void readSearchBar() {
+        inputText = mSearchText.getText().toString();
     }
 
 }

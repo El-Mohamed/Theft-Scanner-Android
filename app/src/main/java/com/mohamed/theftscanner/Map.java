@@ -48,7 +48,7 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
 
     Button mSearchButton;
     EditText mSearchText;
-
+    String inputText;
     List<Theft> allThefts;
     Theft tempTheft;
     List<LatLng> allMarkers;
@@ -89,8 +89,7 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSearchText.onEditorAction(EditorInfo.IME_ACTION_DONE);
-                String inputText = mSearchText.getText().toString().toLowerCase();
+                readSearchBar();
                 resetMap();
                 getThefts(inputText);
 
@@ -245,5 +244,10 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
         mMap.clear();
         allMarkers.clear();
         allThefts.clear();
+    }
+
+    private void readSearchBar() {
+        mSearchText.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        inputText = mSearchText.getText().toString().toLowerCase();
     }
 }
