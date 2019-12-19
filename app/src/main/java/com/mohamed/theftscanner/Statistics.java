@@ -77,21 +77,16 @@ public class Statistics extends AppCompatActivity {
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resetStatistics();
                 readSearchBar();
-                getStatistics(inputText);
+                getThefts(inputText);
             }
         });
 
     }
 
 
-    public void getStatistics(final String inputCity) {
-
-        for (int i = 0; i < vehicleTypes.length; i++) {
-            counts[i] = 0;
-        }
-
-        mSearchText.onEditorAction(EditorInfo.IME_ACTION_DONE);
+    public void getThefts(final String inputCity) {
 
         if (!inputCity.isEmpty()) {
 
@@ -188,9 +183,15 @@ public class Statistics extends AppCompatActivity {
     }
 
     private void readSearchBar() {
+        mSearchText.onEditorAction(EditorInfo.IME_ACTION_DONE);
         inputText = mSearchText.getText().toString();
     }
 
+    private void resetStatistics() {
+        for (int i = 0; i < vehicleTypes.length; i++) {
+            counts[i] = 0;
+        }
+    }
 }
 
 

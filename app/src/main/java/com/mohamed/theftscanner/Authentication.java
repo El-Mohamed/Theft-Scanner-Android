@@ -97,6 +97,7 @@ public class Authentication extends AppCompatActivity {
         });
     }
 
+    // Change from sign in mode to sign up mode
     private void updateScreen() {
 
         mPassword.setText("");
