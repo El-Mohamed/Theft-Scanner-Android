@@ -184,7 +184,7 @@ public class Statistics extends AppCompatActivity {
 
     private void readSearchBar() {
         mSearchText.onEditorAction(EditorInfo.IME_ACTION_DONE);
-        inputText = mSearchText.getText().toString();
+        inputText = mSearchText.getText().toString().toLowerCase();
     }
 
     private void resetStatistics() {

@@ -96,7 +96,7 @@ public class TheftDetails extends AppCompatActivity {
 
     private void readSearchBar() {
         KeyboardHelper.hideKeyboard(TheftDetails.this);
-        inputText = mSearchText.getText().toString();
+        inputText = mSearchText.getText().toString().toLowerCase();
     }
 
 }
