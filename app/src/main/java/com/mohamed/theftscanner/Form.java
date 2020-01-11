@@ -1,8 +1,11 @@
 package com.mohamed.theftscanner;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -23,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -53,6 +57,9 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
     double longitude = 0;
     Theft tempTheft;
     Boolean inputValid = false;
+    private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
+    private NotificationManager mNotifyManager;
+    private static final int NOTIFICATION_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +207,8 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
                 Intent intent = new Intent(Form.this, Dashboard.class);
                 startActivity(intent);
-                Toast.makeText(Form.this, R.string.message_successfully, Toast.LENGTH_LONG).show();
+                createNotificationChannel();
+                sendNotification();
             }
         });
 
@@ -250,4 +258,32 @@ public class Form extends AppCompatActivity implements AdapterView.OnItemSelecte
 
     }
 
+    // Notification
+
+    public void createNotificationChannel() {
+        mNotifyManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(PRIMARY_CHANNEL_ID, "Theft Scanner Notification", NotificationManager.IMPORTANCE_HIGH);
+
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setDescription("Notification from Theft Scanner");
+            mNotifyManager.createNotificationChannel(notificationChannel);
+        }
+    }
+
+    private NotificationCompat.Builder getNotificationBuilder(){
+        NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(this, PRIMARY_CHANNEL_ID)
+                .setContentTitle("Upload Successful")
+                .setContentText("Data has been saved successfully")
+                .setSmallIcon(R.drawable.upload_notification_icon);
+        return notifyBuilder;
+
+    }
+
+    private void sendNotification() {
+        NotificationCompat.Builder notifyBuilder = getNotificationBuilder(); // De builder return deze in de methode
+        mNotifyManager.notify(NOTIFICATION_ID, notifyBuilder.build());
+    }
 }
