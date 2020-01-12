@@ -1,6 +1,7 @@
 package com.mohamed.theftscanner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,14 @@ import java.util.List;
 public class TheftAdapter extends RecyclerView.Adapter<TheftAdapter.ViewHolder> {
 
     private Context mContext;
+    private final LayoutInflater mInflater;
     private List<Theft> allThefts;
 
 
     public TheftAdapter(Context context, List<Theft> thefts) {
         mContext = context;
         allThefts = thefts;
+        mInflater = LayoutInflater.from(context);
     }
 
 
@@ -30,7 +33,7 @@ public class TheftAdapter extends RecyclerView.Adapter<TheftAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.viewholder_details, parent, false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, this);
     }
 
     @Override
@@ -49,22 +52,30 @@ public class TheftAdapter extends RecyclerView.Adapter<TheftAdapter.ViewHolder> 
         return allThefts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView mBrand;
-        TextView mModel;
-        TextView mStreet;
-        TextView mCity;
+        TextView mBrand, mModel, mStreet, mCity;
+        final TheftAdapter mAdapter;
         public ImageView mImage;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, TheftAdapter adapter) {
             super(itemView);
             mBrand = itemView.findViewById(R.id.detail1);
             mModel = itemView.findViewById(R.id.detail2);
             mStreet = itemView.findViewById(R.id.detail3);
             mCity = itemView.findViewById(R.id.detail4);
             mImage = itemView.findViewById(R.id.vehicle_image);
+            mAdapter = adapter;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int mPosition = getLayoutPosition();
+            Intent intent = new Intent (mContext, Map.class);
+            intent.putExtra("lat", allThefts.get(mPosition).getLatitude());
+            intent.putExtra("long", allThefts.get(mPosition).getLongitude());
+            mContext.startActivity(intent);
         }
     }
-
 }

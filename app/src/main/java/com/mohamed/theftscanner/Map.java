@@ -1,9 +1,9 @@
 package com.mohamed.theftscanner;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -20,7 +20,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -41,7 +40,7 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
     private boolean mPermissionDenied = false;
 
     private GoogleMap mMap;
-    LatLng tempLocation;
+    LatLng tempLocation, locationFromIntent;
     boolean toAnimateStart = true;
 
     DatabaseReference mDatabaseReference;
@@ -76,13 +75,24 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
         vehicleTypes = getResources().getStringArray(R.array.vehicle_array);
         allThefts = new ArrayList<>();
         allMarkers = new ArrayList<>();
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-        showStartAnimation();
+
+        if (getIntent() != null) {
+            locationFromIntent = new LatLng(getIntent().getDoubleExtra("lat", 0), getIntent().getDoubleExtra("long", 0));
+        }
+
+        if (locationFromIntent.latitude == 0 || locationFromIntent.longitude == 0) {
+            showStartAnimation();
+        } else {
+            showTheftFromIntent();
+        }
+
         mMap.setOnMyLocationButtonClickListener(this);
         enableMyLocation();
 
@@ -154,15 +164,14 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
     private void showStartAnimation() {
         if (toAnimateStart) {
             LatLng schoolPosition = new LatLng(51.230176, 4.415048);
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(schoolPosition)
-                    .zoom(13)
-                    .bearing(0)
-                    .tilt(60)
-                    .build();
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            animateToMarker(schoolPosition);
             toAnimateStart = false;
         }
+    }
+
+    private void showTheftFromIntent() {
+        mMap.addMarker(new MarkerOptions().position(locationFromIntent).title("Theft"));
+        animateToMarker(locationFromIntent);
     }
 
     private void getThefts(final String inputCity) {
@@ -229,10 +238,10 @@ public class Map extends FragmentActivity implements GoogleMap.OnMyLocationButto
         }
     }
 
-    private void animateToMarker(LatLng lastMarker) {
+    private void animateToMarker(LatLng latLng) {
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(lastMarker)
+                .target(latLng)
                 .zoom(13)
                 .bearing(0)
                 .tilt(60)
