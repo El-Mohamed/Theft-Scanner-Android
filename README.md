@@ -1,4 +1,4 @@
-![Banner](https://raw.githubusercontent.com/ElMoufid-Mohamed/Theft-Scanner/master/app/src/main/res/drawable/banner.png?token=ALLM6ZQQF5QEIAOF4AKLDJC6H5JDQ)
+![Banner](https://raw.githubusercontent.com/ElMoufid-Mohamed/Theft-Scanner/master/app/src/main/res/drawable/banner.png)
 
 ## Status 
 ![GitHub last commit](https://img.shields.io/github/last-commit/ElMoufid-Mohamed/Theft-Scanner)
