@@ -1,4 +1,4 @@
-![Banner](https://raw.githubusercontent.com/ElMoufid-Mohamed/Theft-Scanner-Android/master/Theft%20Scanner/app/src/main/res/drawable/banner.png)
+<img src="Theft%20Scanner/app/src/main/res/drawable/banner.png">
 
 ## Status 
 ![GitHub last commit](https://img.shields.io/github/last-commit/ElMoufid-Mohamed/Theft-Scanner)
@@ -12,12 +12,12 @@
 
 <table >
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ElMoufid-Mohamed/Theft-Scanner-Android/master/ScreenShots/Screenshot_1576787935_pixel_very_silver_portrait.png"></td>
-    <td><img src="https://raw.githubusercontent.com/ElMoufid-Mohamed/Theft-Scanner-Android/master/ScreenShots/Screenshot_1576787905_pixel_very_silver_portrait.png"></td>
+    <td><img src="ScreenShots/Screenshot_1576787935_pixel_very_silver_portrait.png"></td>
+    <td><img src="ScreenShots/Screenshot_1576787905_pixel_very_silver_portrait.png"></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ElMoufid-Mohamed/Theft-Scanner-Android/master/ScreenShots/Screenshot_1576788114_pixel_very_silver_portrait.png"></td>
-    <td><img src="https://raw.githubusercontent.com/ElMoufid-Mohamed/Theft-Scanner-Android/master/ScreenShots/Screenshot_1576787917_pixel_very_silver_portrait.png"></td>
+    <td><img src="ScreenShots/Screenshot_1576788114_pixel_very_silver_portrait.png"></td>
+    <td><img src="ScreenShots/Screenshot_1576787917_pixel_very_silver_portrait.png"></td>
   </tr>
 </table>
 
